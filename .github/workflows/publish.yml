@@ -1,0 +1,33 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v4
+
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          token_format: access_token
+          workload_identity_provider: ${{ vars.GCP_AUTH_WORKLOAD_IDENTITY_POOL }}
+          service_account: ${{ vars.GCP_AUTH_SERVICE_ACCOUNT }}
+
+      - id: publish
+        name: Publish Package
+        uses: docker://us-docker.pkg.dev/deepops/pub/github-action-npm:1.0
+        with:
+          registry: us-npm.pkg.dev/deepops/deep
+          authToken: ${{ steps.auth.outputs.access_token }}
