@@ -1,6 +1,6 @@
 {
   "name": "@deep/pulumi-kit",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "concurrently \"tsc -w\" \"tsc-alias -w\"",
@@ -10,6 +10,10 @@
   "main": "dist/index.js",
   "engines": {
     "node": ">=18"
+  },
+  "author": {
+    "name": "DeepVision Code",
+    "email": "code@deepvision.team"
   },
   "exports": {
     ".": {
