@@ -1,0 +1,60 @@
+{
+  "name": "@deep/pulumi-kit",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "dev": "concurrently \"tsc -w\" \"tsc-alias -w\"",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./cloudflare": {
+      "import": "./dist/cloudflare/index.js",
+      "require": "./dist/cloudflare/index.js",
+      "types": "./dist/cloudflare/index.d.ts"
+    },
+    "./gcp": {
+      "import": "./dist/gcp/index.js",
+      "require": "./dist/gcp/index.js",
+      "types": "./dist/gcp/index.d.ts"
+    },
+    "./github": {
+      "import": "./dist/github/index.js",
+      "require": "./dist/github/index.js",
+      "types": "./dist/github/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "cloudflare": [
+        "dist/cloudflare/index.d.ts"
+      ],
+      "gcp": [
+        "dist/gcp/index.d.ts"
+      ],
+      "github": [
+        "dist/github/index.d.ts"
+      ]
+    }
+  },
+  "dependencies": {
+    "@pulumi/cloudflare": "^5.12.0",
+    "@pulumi/gcp": "^6.67.0",
+    "@pulumi/github": "5.20.0",
+    "@pulumi/google-native": "^0.31.1",
+    "@pulumi/pulumi": "^3.87.0",
+    "yaml": "^2.3.2"
+  },
+  "devDependencies": {
+    "@deepvision/eslint-plugin": "^1.1.23",
+    "@types/node": "^18.18.4",
+    "concurrently": "^8.2.1",
+    "tsc-alias": "^1.8.8",
+    "typescript": "^5.2.2"
+  }
+}
