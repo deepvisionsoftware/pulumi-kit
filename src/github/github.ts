@@ -1,16 +1,18 @@
 import { readFile } from 'node:fs/promises';
-import { parse } from 'yaml';
+
 import {
+  ActionsOrganizationVariable,
+  ActionsRepositoryPermissions,
+  ActionsSecret,
+  BranchProtection,
+  Repository,
+  RepositoryCollaborator,
   Team,
   TeamMembership,
   TeamRepository,
-  Repository,
-  RepositoryCollaborator,
-  BranchProtection,
-  ActionsSecret,
-  ActionsRepositoryPermissions,
-  ActionsOrganizationVariable,
 } from '@pulumi/github';
+import { parse } from 'yaml';
+
 import { BaseContext } from '@/context';
 import { ContextWithIam } from '@/iam';
 
@@ -35,7 +37,7 @@ interface GithubRepo {
     public?: boolean;
     users: Array<GithubRepoUser>;
     teams: Array<GithubRepoTeam>;
-  }
+  };
   protection?: boolean;
   secrets?: Array<GithubSecret>;
   features?: Array<GithubRepoFeature>;
@@ -69,13 +71,7 @@ const mainBranches = ['dev', 'stage', 'master'];
 
 interface UseGithubArgs {}
 export const useGithub = async (args: UseGithubArgs, ctx: Context) => {
-  const {
-    rn,
-    iam: {
-      teams,
-      secrets,
-    },
-  } = ctx;
+  const { rn, iam: { teams, secrets } } = ctx;
 
   // Teams
   const githubTeams = new Map<string, Team>();
@@ -111,15 +107,13 @@ export const useGithub = async (args: UseGithubArgs, ctx: Context) => {
       });
     }
   }
-}
+};
 
 interface UseGithubForProjectArgs {
   projectRoot: string;
 }
 export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Context) => {
-  const {
-    projectRoot,
-  } = args;
+  const { projectRoot } = args;
   const {
     rn,
     iam: {
@@ -144,7 +138,9 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       allowRebaseMerge: false,
       allowSquashMerge: false,
       vulnerabilityAlerts: false,
-    }, { ignoreChanges: ['mergeCommitMessage','mergeCommitTitle','squashMergeCommitMessage','squashMergeCommitTitle']});
+    }, {
+      ignoreChanges: ['mergeCommitMessage', 'mergeCommitTitle', 'squashMergeCommitMessage', 'squashMergeCommitTitle'],
+    });
 
     // Users
     if (repo.access?.users) {
@@ -164,7 +160,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
     // Teams
     if (repo.access?.teams) {
       for (const teamRef of repo.access.teams) {
-        const team = githubTeams.find(team => team.id === teamRef.id);
+        const team = githubTeams.find((team) => team.id === teamRef.id);
         if (!team || !team.github) {
           throw new Error(`Team ${teamRef.id} not found`);
         }
@@ -207,7 +203,9 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       new ActionsRepositoryPermissions(rn(['code', 'github', repo.org, 'repo', repo.name, 'actions']), {
         repository: repo.name,
         allowedActions: 'all',
-      }, { dependsOn: [ghRepo]});
+      }, {
+        dependsOn: [ghRepo],
+      });
     }
   }
-}
+};

@@ -1,19 +1,17 @@
 import { v1 as Compute } from '@pulumi/google-native/compute';
+
 import { CloudflareZone, useDnsRecord } from '@/cloudflare/zone';
 import { BaseContext, ContextWithGcp } from '@/context';
 
 interface UsePublicIpArgs {
   id?: string;
-  technicalZone: CloudflareZone
+  technicalZone: CloudflareZone;
 }
 
 interface Context extends BaseContext, ContextWithGcp {}
 
 export const usePublicIp = (args: UsePublicIpArgs, ctx: Context) => {
-  const {
-    id = 'primary',
-    technicalZone,
-  } = args;
+  const { id = 'primary', technicalZone } = args;
   const {
     rn,
     srn,
@@ -38,5 +36,5 @@ export const usePublicIp = (args: UsePublicIpArgs, ctx: Context) => {
   return {
     ip,
     alias: `${alias}.${technicalZone.name}`,
-  }
+  };
 };

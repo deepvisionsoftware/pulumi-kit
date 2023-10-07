@@ -1,5 +1,6 @@
-import { Output } from '@pulumi/pulumi';
 import { Record } from '@pulumi/cloudflare';
+import { Output } from '@pulumi/pulumi';
+
 import { BaseContext } from '@/context';
 
 interface CloudflareLink {
@@ -20,9 +21,9 @@ interface DnsRecord {
 
 export interface CloudflareZone {
   name: string;
-  hosting: 'cloudflare',
-  cloudflare: CloudflareLink,
-  records?: Array<DnsRecord>,
+  hosting: 'cloudflare';
+  cloudflare: CloudflareLink;
+  records?: Array<DnsRecord>;
 }
 
 interface UseDnsRecordArgs {
@@ -41,9 +42,7 @@ export const useDnsRecord = (args: UseDnsRecordArgs, ctx: BaseContext) => {
     value,
     proxied = false,
   } = args;
-  const {
-    rn,
-  } = ctx;
+  const { rn } = ctx;
 
   new Record(rn(['zone', zone.name, 'cf', type, name === '@' ? '_root' : name]), {
     zoneId: zone.cloudflare.zoneId,
@@ -52,4 +51,4 @@ export const useDnsRecord = (args: UseDnsRecordArgs, ctx: BaseContext) => {
     type,
     proxied,
   });
-}
+};

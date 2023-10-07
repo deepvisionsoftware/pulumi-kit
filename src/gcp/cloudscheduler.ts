@@ -1,7 +1,9 @@
-import { v1 as CloudScheduler } from '@pulumi/google-native/cloudscheduler'
+import { v1 as CloudScheduler } from '@pulumi/google-native/cloudscheduler';
+
 import { BaseContext, ContextWithGcp } from '@/context';
 import { Env } from '@/env';
 import { useManagedByDescription } from '@/helpers/description';
+
 interface Context extends BaseContext, ContextWithGcp {}
 
 export interface CloudSchedulerJob {
@@ -33,13 +35,11 @@ export const useCloudScheduler = (args: UseCloudSchedulerArgs, ctx: Context) => 
   const {
     env,
     rn,
-    gcp: {
-      project,
-      region,
-    }
+    gcp: { project, region },
   } = ctx;
 
-  const jobTargetHeaders: CloudSchedulerJobTargetHeaders = {};
+  const jobTargetHeaders: CloudSchedulerJobTargetHeaders = {
+  };
   if (authToken) {
     jobTargetHeaders['Authorization'] = `Bearer ${authToken}`;
   }
@@ -61,7 +61,7 @@ export const useCloudScheduler = (args: UseCloudSchedulerArgs, ctx: Context) => 
       },
     });
   }
-}
+};
 
 interface UseScheduledCloudRunJobArgs {
   jobs: Array<CloudSchedulerJob>;
@@ -81,10 +81,7 @@ export const useScheduledCloudRunJobs = (args: UseScheduledCloudRunJobArgs, ctx:
   const {
     env,
     rn,
-    gcp: {
-      project,
-      region,
-    }
+    gcp: { project, region },
   } = ctx;
 
   for (const scheduledJob of scheduledJobs) {
@@ -107,4 +104,4 @@ export const useScheduledCloudRunJobs = (args: UseScheduledCloudRunJobArgs, ctx:
       },
     });
   }
-}
+};

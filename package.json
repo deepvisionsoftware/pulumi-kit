@@ -4,9 +4,13 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "concurrently \"tsc -w\" \"tsc-alias -w\"",
-    "lint": "eslint \"src/**/*.ts\""
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint --fix \"src/**/*.ts\""
   },
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=18"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

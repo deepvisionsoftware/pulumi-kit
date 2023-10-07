@@ -1,11 +1,13 @@
-import pulumi from '@pulumi/pulumi';
-import { parse } from 'yaml';
-import { v3 as CloudResourceManager } from '@pulumi/google-native/cloudresourcemanager';
+import { readFile } from 'node:fs/promises';
+
 import { projects as GcpProjects } from '@pulumi/gcp';
 import { Project as GcpProject } from '@pulumi/gcp/organizations';
+import { v3 as CloudResourceManager } from '@pulumi/google-native/cloudresourcemanager';
+import pulumi from '@pulumi/pulumi';
+import { parse } from 'yaml';
+
 import { BaseContext, ContextWithGcp } from '@/context';
 import { ContextWithIam } from '@/iam';
-import { readFile } from "node:fs/promises";
 
 export interface GcpFolder extends CloudResourceManager.Folder {}
 export interface PlainProject {
@@ -17,7 +19,7 @@ export interface GcpProjectSpec {
   id: string;
   access?: {
     users?: Array<GcpUserSpec>;
-  }
+  };
 }
 interface GcpUserSpec {
   id: string;
@@ -84,13 +86,15 @@ export const useProject = (args: UseProjectArgs, ctx: Context): [GcpProject, Arr
   }
 
   return [gcpProject, gcpServices];
-}
+};
 
 interface GrantUserRolesArgs {
   roles: Array<string>;
   userEmail: string;
   project: string;
 }
+
+// eslint-disable-next-line  @typescript-eslint/no-unused-vars
 export const grantUserRoles = (args: GrantUserRolesArgs, ctx: Context, deps: pulumi.Resource[] = []) => {
   const {
     roles,
@@ -115,21 +119,14 @@ export const grantUserRoles = (args: GrantUserRolesArgs, ctx: Context, deps: pul
     //   member: serviceAccount.email.apply((email) => `serviceAccount:${email}`),
     // });
   }
-}
+};
 
 interface UseProjectIamArgs {
   projectRoot: string;
 }
 export const useProjectIam = async (args: UseProjectIamArgs, ctx: Context) => {
-  const {
-    projectRoot,
-  } = args;
-  const {
-    rn,
-    iam: {
-      getUserById,
-    },
-  } = ctx;
+  const { projectRoot } = args;
+  const { rn, iam: { getUserById } } = ctx;
 
   const projectsFile = `${projectRoot}/gcp.yml`;
   const projects = parse(await readFile(projectsFile, 'utf-8')) as Array<GcpProjectSpec>;
@@ -150,4 +147,4 @@ export const useProjectIam = async (args: UseProjectIamArgs, ctx: Context) => {
       }
     }
   }
-}
+};

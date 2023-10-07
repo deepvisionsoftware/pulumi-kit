@@ -1,9 +1,10 @@
-import { v1 as Iam } from '@pulumi/google-native/iam';
 // import { v3 as CloudResourceManager } from '@pulumi/google-native/cloudresourcemanager';
 import { projects as GcpProjects } from '@pulumi/gcp';
-import { dashToCamelWithSpaces, useManagedByDescription } from '@/helpers/description';
-import { BaseContext, ContextWithGcp } from '@/context';
+import { v1 as Iam } from '@pulumi/google-native/iam';
 import pulumi from '@pulumi/pulumi';
+
+import { BaseContext, ContextWithGcp } from '@/context';
+import { dashToCamelWithSpaces, useManagedByDescription } from '@/helpers/description';
 
 interface UseServiceAccountArgs {
   name: string;
@@ -56,6 +57,8 @@ interface GrantServiceAccountRolesArgs {
   project: string;
   customResourceName?: string;
 }
+
+// eslint-disable-next-line  @typescript-eslint/no-unused-vars
 export const grantServiceAccountRoles = (args: GrantServiceAccountRolesArgs, ctx: Context, deps: pulumi.Resource[] = []) => {
   const {
     roles,
@@ -84,4 +87,4 @@ export const grantServiceAccountRoles = (args: GrantServiceAccountRolesArgs, ctx
     //   member: serviceAccount.email.apply((email) => `serviceAccount:${email}`),
     // });
   }
-}
+};

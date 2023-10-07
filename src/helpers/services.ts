@@ -3,7 +3,7 @@ import { Env } from '@/env';
 
 export const getServiceByName = (name: string, ctx: ContextWithServices) => {
   return ctx.services.find((service) => service.name === name);
-}
+};
 
 interface BuildServiceEndpointArgs {
   name: string;
@@ -24,4 +24,4 @@ export const buildServiceEndpoint = (args: BuildServiceEndpointArgs) => {
   endpoint.push(domain);
 
   return endpoint.join('.');
-}
+};

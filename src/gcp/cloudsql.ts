@@ -1,13 +1,14 @@
-import { Env } from '@/env';
 import { v1 as CloudSqlAdmin } from '@pulumi/google-native/sqladmin';
 import {
+  BackupRetentionSettingsRetentionUnit,
   SettingsActivationPolicy,
   SettingsAvailabilityType,
   SettingsDataDiskType,
   SettingsPricingPlan,
-  BackupRetentionSettingsRetentionUnit,
 } from '@pulumi/google-native/types/enums/sqladmin/v1';
+
 import { BaseContext, ContextWithGcp } from '@/context';
+import { Env } from '@/env';
 
 export enum CloudSqlPostgresVersion {
   POSTGRES_14 = 'POSTGRES_14',
@@ -41,11 +42,6 @@ export const useCloudSql = (args: UseCloudSqlArgs, ctx: Context) => {
     version = CloudSqlPostgresVersion.POSTGRES_15,
     tier = env === Env.DEV ? CloudSqlTier.F1_MICRO : CloudSqlTier.CUSTOM_2_3840,
   } = args;
-
-  const databaseBackupSettings = env === Env.PROD ? {
-    enabled: true,
-    pointInTimeRecoveryEnabled: true,
-  } : undefined;
 
   const dbInstance = new CloudSqlAdmin.Instance(rn(['service', name, 'gcp', 'sql']), {
     name: srn(name),

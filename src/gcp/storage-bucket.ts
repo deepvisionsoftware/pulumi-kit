@@ -1,9 +1,10 @@
-import { v1 as Storage } from '@pulumi/google-native/storage';
-import { v1 as Compute } from '@pulumi/google-native/compute';
 import { storage as GcpStorage } from '@pulumi/gcp';
+import { v1 as Compute } from '@pulumi/google-native/compute';
+import { v1 as Storage } from '@pulumi/google-native/storage';
+
+import { BaseContext, ContextWithGcp } from '@/context';
 import { Env } from '@/env';
 import { useManagedByDescription } from '@/helpers/description';
-import { BaseContext, ContextWithGcp } from '@/context';
 
 interface UseStorageBucketArgs {
   name: string;

@@ -1,16 +1,17 @@
-import { Output } from '@pulumi/pulumi';
+import { v1 as CertificateManager } from '@pulumi/google-native/certificatemanager';
+import { v1 as Compute } from '@pulumi/google-native/compute';
 import {
   BackendBucket,
   BackendService,
   HttpRedirectActionRedirectResponseCode,
 } from '@pulumi/google-native/compute/v1';
-import { v1 as Compute } from '@pulumi/google-native/compute';
-import { v1 as CertificateManager } from '@pulumi/google-native/certificatemanager';
 import { GlobalForwardingRuleLoadBalancingScheme } from '@pulumi/google-native/types/enums/compute/v1';
-import { useEnvSuffix } from '@/env';
-import { useManagedByDescription } from '@/helpers/description';
+import { Output } from '@pulumi/pulumi';
+
 import { CloudflareZone, useDnsRecord } from '@/cloudflare/zone';
 import { BaseContext, ContextWithGcp } from '@/context';
+import { useEnvSuffix } from '@/env';
+import { useManagedByDescription } from '@/helpers/description';
 
 export interface Service {
   subdomain: string;
@@ -38,8 +39,8 @@ interface UrlMapArgs {
     stripQuery: boolean;
     redirectResponseCode: HttpRedirectActionRedirectResponseCode;
   };
-  hostRules: Array<UrlHostRule>,
-  pathMatchers: Array<UrlPathMatcher>,
+  hostRules: Array<UrlHostRule>;
+  pathMatchers: Array<UrlPathMatcher>;
   description: string;
 }
 interface UrlHostRule {
@@ -69,9 +70,7 @@ export const useLoadBalancer = async (args: UseLoadBalancerArgs, ctx: Context) =
   } = args;
   const {
     env,
-    gcp: {
-      project,
-    },
+    gcp: { project },
     rn,
     srn,
   } = ctx;
@@ -162,7 +161,9 @@ export const useLoadBalancer = async (args: UseLoadBalancerArgs, ctx: Context) =
   const urlMap = new Compute.UrlMap(
     rn(['net', 'gcp', 'urlmap', id]),
     urlMapArgs,
-    { ignoreChanges: urlMapIgnores }
+    {
+      ignoreChanges: urlMapIgnores,
+    },
   );
 
   const httpsProxyName = id === 'primary' ? 'https' : `${id}-https`;
@@ -214,14 +215,8 @@ interface UseCertificateWithLoadBalancerArgs {
   certMapName: string;
 }
 export const useCertificateWithLoadBalancer = async (args: UseCertificateWithLoadBalancerArgs, ctx: Context) => {
-  const {
-    domainName,
-    certMapName,
-  } = args;
-  const {
-    rn,
-    gcp: { project },
-  } = ctx;
+  const { domainName, certMapName } = args;
+  const { rn, gcp: { project } } = ctx;
 
   const safeDomainName = domainName.replace(/\./g, '-');
 
@@ -239,7 +234,7 @@ export const useCertificateWithLoadBalancer = async (args: UseCertificateWithLoa
     ignoreChanges: ['managed'],
   });
 
-  new CertificateManager.CertificateMapEntry(rn(['net', 'gcp', 'certmap', certMapName,  domainName]), {
+  new CertificateManager.CertificateMapEntry(rn(['net', 'gcp', 'certmap', certMapName, domainName]), {
     certificateMapEntryId: safeDomainName,
     location: 'global',
     name: `${certMapName}/certificateMapEntries/${safeDomainName}`,
@@ -248,4 +243,4 @@ export const useCertificateWithLoadBalancer = async (args: UseCertificateWithLoa
     hostname: domainName,
     description: useManagedByDescription(ctx),
   });
-}
+};

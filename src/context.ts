@@ -1,8 +1,11 @@
 import { readFile } from 'node:fs/promises';
+
 import { getStack } from '@pulumi/pulumi';
+
 import { Env } from './env';
 import { useResourceNameFactory } from './helpers/resource-names';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface BaseContext<T = any> {
   // Current environment
   env: Env;
@@ -37,7 +40,7 @@ export interface ServiceConfig {
   prefix: string;
   db?: {
     password: string;
-  }
+  };
 }
 export interface ContextWithServices {
   services: Array<ServiceConfig>;
@@ -66,5 +69,5 @@ const usePackageConfig = async (): Promise<PackageConfig> => {
   const packageJson = await readFile('package.json', 'utf-8');
 
   return JSON.parse(packageJson);
-}
+};
 

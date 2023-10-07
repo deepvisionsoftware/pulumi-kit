@@ -1,13 +1,14 @@
+import { projects as GcpProjects } from '@pulumi/gcp';
 import { v1 as Compute } from '@pulumi/google-native/compute';
 import {
   BackendServiceCompressionMode,
   BackendServiceLoadBalancingScheme,
-  RegionNetworkEndpointGroupNetworkEndpointType
+  RegionNetworkEndpointGroupNetworkEndpointType,
 } from '@pulumi/google-native/types/enums/compute/v1';
-import { useManagedByDescription } from '@/helpers/description';
+
 import { BaseContext, ContextWithGcp } from '@/context';
-import { projects as GcpProjects } from '@pulumi/gcp';
-import { Env } from "@/env";
+import { Env } from '@/env';
+import { useManagedByDescription } from '@/helpers/description';
 
 enum BackendType {
   HTTP = 'http',
@@ -63,16 +64,12 @@ interface EnableCloudRunPublicAccessArgs {
   project: string;
 }
 export const enableCloudRunPublicAccess = (args: EnableCloudRunPublicAccessArgs, ctx: Context) => {
-  const {
-    project,
-  } = args;
-  const {
-    rn,
-  } = ctx;
+  const { project } = args;
+  const { rn } = ctx;
 
   new GcpProjects.IAMMember(rn(['root', 'gcp', 'project', project, 'cloudrun', 'public-access']), {
     project,
     role: 'roles/run.invoker',
     member: 'allUsers',
   });
-}
+};
