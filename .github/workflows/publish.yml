@@ -24,6 +24,7 @@ jobs:
           token_format: access_token
           workload_identity_provider: ${{ vars.GCP_AUTH_WORKLOAD_IDENTITY_POOL }}
           service_account: ${{ vars.GCP_AUTH_SERVICE_ACCOUNT }}
+          create_credentials_file: false
 
       - id: publish
         name: Publish Package
