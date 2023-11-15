@@ -56,6 +56,12 @@ interface GrantDockerRepositoryAccessArgs {
   runProjectNumber: Output<string> | string;
   runProjectId: string;
 }
+
+/**
+ * Grants Docker repository access to a service account in a Google Cloud Platform project.
+ * @param args - The arguments needed to grant access.
+ * @param ctx - The Pulumi context object.
+ */
 export const grantDockerRepositoryAccess = (args: GrantDockerRepositoryAccessArgs, ctx: Context) => {
   const {
     opsProject,

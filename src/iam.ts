@@ -5,30 +5,102 @@ import { parse } from 'yaml';
 import { isFileExists } from '@/helpers/tools';
 import { Maybe } from '@/helpers/types';
 
+/**
+ * Context object that contains IAM-related properties and methods.
+ */
 export interface ContextWithIam {
   iam: {
+    /**
+     * Array of IAM users.
+     */
     users: Array<IamUser>;
+
+    /**
+     * Returns an IAM user by ID.
+     * @param id The ID of the user to retrieve.
+     * @returns The IAM user with the specified ID, or null if not found.
+     */
     getUserById: (id: string) => Maybe<IamUser>;
+
+    /**
+     * Array of IAM teams.
+     */
     teams: Array<IamTeam>;
+
+    /**
+     * Array of IAM secrets.
+     */
     secrets: Array<IamSecret>;
+
+    /**
+     * Returns the value of an IAM secret by ID.
+     * @param id The ID of the secret to retrieve.
+     * @returns The value of the IAM secret with the specified ID, or null if not found.
+     */
     getSecretValue: (id: string) => Maybe<string>;
   };
 }
 
+/**
+ * Represents a user in the IAM system.
+ */
 interface IamUser {
+  /**
+   * The unique identifier of the user.
+   * @example 1234567890
+   */
   id: string;
+
+  /**
+   * The first name of the user.
+   * @example John
+   */
   firstName: string;
+
+  /**
+   * The last name of the user.
+   * @example Doe
+   */
   lastName: string;
+
+  /**
+   * The email address of the user.
+   * @example example@service.com
+   */
   email: string;
+
+  /**
+   * The team that the user belongs to.
+   * @example tech-team
+   */
   team: string;
+
+  /**
+   * The GitHub account information of the user.
+   */
   github: {
+    /**
+     * The GitHub login of the user.
+     * @example johndoe
+     */
     login: string;
+
+    /**
+     * The organization role of the user, if applicable.
+     */
     org?: {
+      /**
+       * The name of the organization.
+       * @example deeepvision
+       */
       role: string;
     };
   };
 }
 
+/**
+ * Represents a team in the IAM system.
+ */
 interface IamTeam {
   id: string;
   title: string;
@@ -53,6 +125,7 @@ interface IamSecret {
 const getUserByIdFactory = (users: Array<IamUser>) => (id: string): Maybe<IamUser> => {
   return users.find((user) => user.id === id);
 };
+
 const getSecretValueFactory = (secrets: Array<IamSecret>) => (id: string): Maybe<string> => {
   // local::cf/hccloud/access-token/pages230412
   // gcs::cf/hccloud/access-token/pages230412
@@ -72,6 +145,10 @@ const getSecretValueFactory = (secrets: Array<IamSecret>) => (id: string): Maybe
   return secret?.value;
 };
 
+/**
+ * Returns an object containing IAM context with users, teams, and secrets.
+ * @returns {Promise<ContextWithIam>} An object containing IAM context with users, teams, and secrets.
+ */
 export const useIamContext = async (): Promise<ContextWithIam> => {
   // Load Users
   const usersFilePath = 'src/iam/users.yml';

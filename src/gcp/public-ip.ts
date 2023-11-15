@@ -10,6 +10,12 @@ interface UsePublicIpArgs {
 
 interface Context extends BaseContext, ContextWithGcp {}
 
+/**
+ * Creates a new global IP address and DNS record for it.
+ * @param args - The arguments for creating the public IP.
+ * @param ctx - The Pulumi context object.
+ * @returns An object containing the IP address and its DNS alias.
+ */
 export const usePublicIp = (args: UsePublicIpArgs, ctx: Context) => {
   const { id = 'primary', technicalZone } = args;
   const {

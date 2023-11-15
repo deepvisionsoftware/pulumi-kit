@@ -7,31 +7,82 @@ import { useResourceNameFactory } from './helpers/resource-names';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface BaseContext<T = any> {
-  // Current environment
+  /**
+   * The current environment.
+   */
   env: Env;
-  // package.json
+
+  /**
+   * Package configuration.
+   */
   package: PackageConfig;
-  // Project Config
+
+  /**
+   * Project-specific configuration.
+   */
   project: T;
 
-  // Create Resource name func
+  /**
+   * Returns a resource name based on the provided environment and name.
+   * @param name - The name to use in the resource name.
+   * @returns A resource name based on the provided environment and name.
+   * @example rn('my-resource'); // my-resource:prod
+   * @example rn(['my', 'resource']); // my/resource:prod
+   */
   rn: (name: string | Array<string>) => string;
-  // Create Resource name func (safe)
+
+  /**
+   * Returns a safe resource name based on the provided environment and name.
+   * @param name - The name to use in the resource name.
+   * @returns A safe resource name based on the provided environment and name.
+   */
   srn: (name: string | Array<string>) => string;
 }
 
+/**
+ * Configuration options for Google Cloud Platform (GCP).
+ */
 export interface GcpConfig {
+  /**
+   * The GCP project ID.
+   * @example my-project-123456
+   * */
   project: string;
+
+  /**
+   * The GCP region.
+   * @example us-central1
+   * */
   region: string;
+
+  /**
+   * The billing account ID.
+   * @example 012345-ABCDEF-012345
+   * */
   billingAccount?: string;
+
+  /**
+   * The GCP organization ID. Optional.
+   * @example 582184023416
+   *  */
   org?: string;
 }
+
 export interface ContextWithGcp {
   gcp: GcpConfig;
 }
 
 interface PackageConfig {
+  /*
+  * The name of the package.
+  * @example @deep/pulumi-kit
+  */
   version: string;
+
+  /*
+  * The description of the package.
+  * @example Pulumi Kit for Deep Vision
+  */
   description?: string;
 }
 

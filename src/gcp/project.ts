@@ -26,12 +26,37 @@ interface GcpUserSpec {
   roles: Array<string>;
 }
 
+/**
+ * Arguments for creating or updating a GCP project.
+ */
 interface UseProjectArgs {
+  /**
+   * The ID of the project.
+   * @example hccloud
+   */
   id: string;
+  /**
+   * The name of the project.
+   * @example HC Cloud
+   */
   name: string;
+  /**
+   * The billing account ID for the project.
+   * @example 123456-123456-123456
+   */
   billingAccountId: string;
+  /**
+   * An optional array of service names to enable for the project.
+   */
   services?: Array<string>;
+  /**
+   * The ID of the parent organization for the project.
+   * @example deepvision
+   */
   parentOrg?: string;
+  /**
+   * The parent folder for the project.
+   */
   parentFolder?: CloudResourceManager.Folder;
 }
 
@@ -88,13 +113,33 @@ export const useProject = (args: UseProjectArgs, ctx: Context): [GcpProject, Arr
   return [gcpProject, gcpServices];
 };
 
+/**
+ * Arguments for granting roles to a user on a GCP project.
+ */
 interface GrantUserRolesArgs {
+  /**
+   * The roles to grant to the user.
+   */
   roles: Array<string>;
+  /**
+   * The email address of the user to grant roles to.
+   * @example john.doe@example.com
+   */
   userEmail: string;
+  /**
+   * The ID of the GCP project to grant roles on.
+   * @example hccloud
+   */
   project: string;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-unused-vars
+/**
+ * Grants user roles to a specified user in a Google Cloud Platform project.
+ * @param args - The arguments for granting user roles.
+ * @param ctx - The Pulumi context object.
+ * @param deps - An optional array of resources to add as dependencies.
+ */
 export const grantUserRoles = (args: GrantUserRolesArgs, ctx: Context, deps: pulumi.Resource[] = []) => {
   const {
     roles,
@@ -124,6 +169,13 @@ export const grantUserRoles = (args: GrantUserRolesArgs, ctx: Context, deps: pul
 interface UseProjectIamArgs {
   projectRoot: string;
 }
+/**
+ * Applies IAM roles to users for a GCP project from a YAML file.
+ * @param args - The arguments for the function.
+ * @param args.projectRoot - The root directory of the project.
+ * @param ctx - The Pulumi context object.
+ * @throws Will throw an error if a user does not have an email.
+ */
 export const useProjectIam = async (args: UseProjectIamArgs, ctx: Context) => {
   const { projectRoot } = args;
   const { rn, iam: { getUserById } } = ctx;

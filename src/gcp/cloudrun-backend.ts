@@ -31,6 +31,7 @@ export const useCloudRunBackend = (args: UseCloudRunBackendArgs, ctx: Context) =
     env,
   } = ctx;
 
+  // Create Network Endpoint Group
   const neg = new Compute.RegionNetworkEndpointGroup(rn(['service', serviceName, 'gcp', 'neg', type]), {
     name: srn([serviceName, type]),
     description: useManagedByDescription(ctx),
@@ -41,6 +42,7 @@ export const useCloudRunBackend = (args: UseCloudRunBackendArgs, ctx: Context) =
     },
   });
 
+  // Create Backend Service and attach NEG
   const backend = new Compute.BackendService(rn(['service', serviceName, 'gcp', 'backend', type]), {
     name: srn([serviceName, type]),
     description: useManagedByDescription(ctx),
