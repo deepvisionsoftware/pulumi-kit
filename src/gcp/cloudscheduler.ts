@@ -6,21 +6,61 @@ import { useManagedByDescription } from '@/helpers/description';
 
 interface Context extends BaseContext, ContextWithGcp {}
 
+/**
+ * Represents a Cloud Scheduler job.
+ */
 export interface CloudSchedulerJob {
+  /**
+   * The name of the job.
+   * @example jobs-sync
+   */
   name: string;
+  /**
+   * The schedule for the job in cron format.
+   * @example * * * * *
+   */
   schedule?: string;
+  /**
+   * The environment variables to set for the job.
+   * @example { env: Env.DEV }
+   */
   env?: Env;
+  /**
+   * The URL to call when the job is triggered.
+   * @example /jobs/sync
+   */
   url?: string;
 }
+
 interface CloudSchedulerJobTargetHeaders {
   [key: string]: string;
 }
 
+/**
+ * Arguments for the `useCloudScheduler` function.
+ */
 interface UseCloudSchedulerArgs {
+  /**
+   * An array of Cloud Scheduler jobs to create or update.
+   */
   jobs: Array<CloudSchedulerJob>;
+  /**
+   * The time zone to use for the Cloud Scheduler jobs. Defaults to UTC.
+   */
   timeZone?: string;
+  /**
+   * An optional authentication JWT token to use when making requests to the Cloud Scheduler API.
+   */
   authToken?: string;
+  /**
+   * The service endpoint for the Cloud Scheduler API.
+   * @example app-api.jetstream.studio
+   */
   serviceEndpoint: string;
+  /**
+   * The name of the service using the Cloud Scheduler jobs.
+   * @example jetstream-core
+   */
   serviceName: string;
 }
 

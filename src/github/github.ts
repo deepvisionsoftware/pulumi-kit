@@ -58,18 +58,49 @@ enum GithubRepoRole {
   MAINTAIN = 'maintain',
   ADMIN = 'admin',
 }
+
+/**
+ * Enum representing the roles a user can have within a GitHub team.
+ */
 enum GithubTeamRole {
+  /**
+   * Can read and clone repositories within the team.
+   */
   MEMBER = 'member',
+
+  /**
+   * Can read, clone, push, and add team members to repositories within the team.
+   */
   MAINTAINER = 'maintainer',
 }
+
+/**
+ * Enum representing the privacy settings for a GitHub team.
+ */
 enum GithubTeamPrivacy {
+  /**
+   * The team is visible to all members of the organization.
+   */
   CLOSED = 'closed',
+
+  /**
+   * The team is visible only to its members.
+   */
   SECRET = 'secret',
 }
 
+/**
+ * The list of main branches for the GitHub repository.
+ */
 const mainBranches = ['dev', 'stage', 'master'];
 
 interface UseGithubArgs {}
+
+/**
+ * Creates and configures organization variables, teams, and secrets for GitHub.
+ * @param args - The arguments for configuring GitHub.
+ * @param ctx - The context containing the necessary resources for configuring GitHub.
+ */
 export const useGithub = async (args: UseGithubArgs, ctx: Context) => {
   const { rn, iam: { teams, secrets } } = ctx;
 
@@ -112,6 +143,11 @@ export const useGithub = async (args: UseGithubArgs, ctx: Context) => {
 interface UseGithubForProjectArgs {
   projectRoot: string;
 }
+/**
+ * Creates and configures GitHub repositories, collaborators, teams, secrets, and branch protections for a project.
+ * @param args - The arguments for configuring GitHub for the project.
+ * @param ctx - The context object containing necessary dependencies.
+ */
 export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Context) => {
   const { projectRoot } = args;
   const {
@@ -199,6 +235,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       }
     }
 
+    // Actions
     if (repo.features?.includes(GithubRepoFeature.ACTIONS)) {
       new ActionsRepositoryPermissions(rn(['code', 'github', repo.org, 'repo', repo.name, 'actions']), {
         repository: repo.name,

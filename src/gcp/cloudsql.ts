@@ -14,20 +14,50 @@ export enum CloudSqlPostgresVersion {
   POSTGRES_14 = 'POSTGRES_14',
   POSTGRES_15 = 'POSTGRES_15',
 }
+
 export enum CloudSqlTier {
   F1_MICRO = 'db-f1-micro',
   CUSTOM_2_3840 = 'db-custom-2-3840',
 }
 
+/**
+ * Arguments for creating a Cloud SQL instance.
+ */
 interface UseCloudSqlArgs {
+  /**
+   * The name of the Cloud SQL instance.
+   * @example ugi-api
+   */
   name: string;
+  /**
+   * The username for the Cloud SQL instance.
+   * @example app
+   */
   userName?: string;
+  /**
+   * The password for the Cloud SQL instance.
+   * @example my-password
+   */
   password: string;
+  /**
+   * The version of PostgreSQL to use for the Cloud SQL instance.
+   * @example POSTGRES_15
+   */
   version?: CloudSqlPostgresVersion;
+
+  /**
+   * The tier of the Cloud SQL instance.
+   * @example db-f1-micro
+   */
   tier?: string;
 }
 
 interface Context extends BaseContext, ContextWithGcp {}
+/**
+ * Creates a Cloud SQL instance, database, and user with the specified configuration.
+ * @param args - The arguments for creating the Cloud SQL resources.
+ * @param ctx - The Pulumi context object.
+ */
 export const useCloudSql = (args: UseCloudSqlArgs, ctx: Context) => {
   const {
     rn,
