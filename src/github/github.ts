@@ -4,6 +4,7 @@ import {
   ActionsOrganizationVariable,
   ActionsRepositoryPermissions,
   ActionsSecret,
+  ActionsVariable,
   BranchProtection,
   Repository,
   RepositoryCollaborator,
@@ -19,6 +20,11 @@ import { ContextWithIam } from '@/iam';
 interface Context extends BaseContext, ContextWithIam {}
 
 interface GithubSecret {
+  key: string;
+  valueFrom: string;
+}
+
+interface GithubVariable {
   key: string;
   valueFrom: string;
 }
@@ -40,6 +46,7 @@ interface GithubRepo {
   };
   protection?: boolean;
   secrets?: Array<GithubSecret>;
+  variables?: Array<GithubVariable>;
   features?: Array<GithubRepoFeature>;
 }
 interface GithubRepoUser {
@@ -206,6 +213,20 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
           teamId: team.github.name,
           permission: teamRef.role,
         });
+      }
+    }
+
+    // Variables
+    if (repo.variables) {
+      for (const variableRef of repo.variables) {
+        const secretValue = await getSecretValue(variableRef.valueFrom);
+        if (secretValue) {
+          new ActionsVariable(rn(['code', 'github', repo.org, 'repo', repo.name, 'var', variableRef.key]), {
+            repository: repo.name,
+            variableName: variableRef.key,
+            value: secretValue,
+          });
+        }
       }
     }
 
