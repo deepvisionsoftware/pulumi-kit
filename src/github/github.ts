@@ -21,12 +21,14 @@ interface Context extends BaseContext, ContextWithIam {}
 
 interface GithubSecret {
   key: string;
-  valueFrom: string;
+  value?: string;
+  valueFrom?: string;
 }
 
 interface GithubVariable {
   key: string;
-  valueFrom: string;
+  value?: string;
+  valueFrom?: string;
 }
 
 enum GithubRepoFeature {
@@ -219,7 +221,11 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
     // Variables
     if (repo.variables) {
       for (const variableRef of repo.variables) {
-        const secretValue = await getSecretValue(variableRef.valueFrom);
+        if (!variableRef.value && !variableRef.valueFrom) {
+          throw new Error(`Variable ${variableRef.key} does not have a value or valueFrom`);
+        }
+
+        const secretValue = variableRef.value || (await getSecretValue(variableRef.valueFrom!));
         if (!secretValue) {
           throw new Error(`Secret value ${variableRef.valueFrom} not found`);
         }
@@ -235,8 +241,11 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
     // Secrets
     if (repo.secrets) {
       for (const secretRef of repo.secrets) {
-        const secretValue = await getSecretValue(secretRef.valueFrom);
+        if (!secretRef.value && !secretRef.valueFrom) {
+          throw new Error(`Variable ${secretRef.key} does not have a value or valueFrom`);
+        }
 
+        const secretValue = secretRef.value || (await getSecretValue(secretRef.valueFrom!));
         if (!secretValue) {
           throw new Error(`Secret value ${secretRef.valueFrom} not found`);
         }
