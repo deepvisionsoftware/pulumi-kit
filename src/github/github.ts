@@ -220,13 +220,15 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
     if (repo.variables) {
       for (const variableRef of repo.variables) {
         const secretValue = await getSecretValue(variableRef.valueFrom);
-        if (secretValue) {
-          new ActionsVariable(rn(['code', 'github', repo.org, 'repo', repo.name, 'var', variableRef.key]), {
-            repository: repo.name,
-            variableName: variableRef.key,
-            value: secretValue,
-          });
+        if (!secretValue) {
+          throw new Error(`Secret value ${variableRef.valueFrom} not found`);
         }
+
+        new ActionsVariable(rn(['code', 'github', repo.org, 'repo', repo.name, 'var', variableRef.key]), {
+          repository: repo.name,
+          variableName: variableRef.key,
+          value: secretValue,
+        });
       }
     }
 
@@ -234,6 +236,11 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
     if (repo.secrets) {
       for (const secretRef of repo.secrets) {
         const secretValue = await getSecretValue(secretRef.valueFrom);
+
+        if (!secretValue) {
+          throw new Error(`Secret value ${secretRef.valueFrom} not found`);
+        }
+
         new ActionsSecret(rn(['code', 'github', repo.org, 'repo', repo.name, 'secret', secretRef.key]), {
           repository: repo.name,
           secretName: secretRef.key,
