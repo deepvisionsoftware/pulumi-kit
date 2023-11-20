@@ -282,4 +282,8 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       });
     }
   }
+
+  return {
+    githubRepos,
+  };
 };
