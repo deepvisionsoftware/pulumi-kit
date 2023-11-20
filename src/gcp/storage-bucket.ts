@@ -98,6 +98,8 @@ export const useStorageBucket = (args: UseStorageBucketArgs, ctx: Context) => {
       bucket: bucket.name,
       role: 'roles/storage.objectViewer',
       member: 'allUsers',
+    }, {
+      dependsOn: [bucket],
     });
     // new Storage.BucketIamMember(rn(['storage', 'gcp', 'bucket', prefix, name, 'public-access']), {
     //   name: bucket.name,
@@ -114,6 +116,8 @@ export const useStorageBucket = (args: UseStorageBucketArgs, ctx: Context) => {
       description: useManagedByDescription(ctx),
       bucketName: bucket.name,
       enableCdn: env === Env.PROD,
+    }, {
+      dependsOn: [bucket],
     });
   }
 

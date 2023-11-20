@@ -4,6 +4,7 @@ import {
   ActionsOrganizationVariable,
   ActionsRepositoryPermissions,
   ActionsSecret,
+  ActionsVariable,
   BranchProtection,
   Repository,
   RepositoryCollaborator,
@@ -20,7 +21,14 @@ interface Context extends BaseContext, ContextWithIam {}
 
 interface GithubSecret {
   key: string;
-  valueFrom: string;
+  value?: string;
+  valueFrom?: string;
+}
+
+interface GithubVariable {
+  key: string;
+  value?: string;
+  valueFrom?: string;
 }
 
 enum GithubRepoFeature {
@@ -40,6 +48,7 @@ interface GithubRepo {
   };
   protection?: boolean;
   secrets?: Array<GithubSecret>;
+  variables?: Array<GithubVariable>;
   features?: Array<GithubRepoFeature>;
 }
 interface GithubRepoUser {
@@ -209,10 +218,38 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       }
     }
 
+    // Variables
+    if (repo.variables) {
+      for (const variableRef of repo.variables) {
+        if (!variableRef.value && !variableRef.valueFrom) {
+          throw new Error(`Variable ${variableRef.key} does not have a value or valueFrom`);
+        }
+
+        const secretValue = variableRef.value || (await getSecretValue(variableRef.valueFrom!));
+        if (!secretValue) {
+          throw new Error(`Secret value ${variableRef.valueFrom} not found`);
+        }
+
+        new ActionsVariable(rn(['code', 'github', repo.org, 'repo', repo.name, 'var', variableRef.key]), {
+          repository: repo.name,
+          variableName: variableRef.key,
+          value: secretValue,
+        });
+      }
+    }
+
     // Secrets
     if (repo.secrets) {
       for (const secretRef of repo.secrets) {
-        const secretValue = await getSecretValue(secretRef.valueFrom);
+        if (!secretRef.value && !secretRef.valueFrom) {
+          throw new Error(`Variable ${secretRef.key} does not have a value or valueFrom`);
+        }
+
+        const secretValue = secretRef.value || (await getSecretValue(secretRef.valueFrom!));
+        if (!secretValue) {
+          throw new Error(`Secret value ${secretRef.valueFrom} not found`);
+        }
+
         new ActionsSecret(rn(['code', 'github', repo.org, 'repo', repo.name, 'secret', secretRef.key]), {
           repository: repo.name,
           secretName: secretRef.key,
@@ -245,4 +282,8 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       });
     }
   }
+
+  return {
+    githubRepos,
+  };
 };

@@ -90,4 +90,6 @@ export enum GcpServices {
   YOUTUBE = 'youtube',
   /** Google Drive API */
   DRIVE = 'drive',
+  /** Cloud Functions */
+  CLOUDFUNCTIONS = 'cloudfunctions',
 }
