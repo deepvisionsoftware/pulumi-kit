@@ -1,5 +1,6 @@
 export * from './enums';
 export * from './cloudrun-backend';
+export * from './cloudrun-domain-mapping';
 export * from './load-balancer';
 export * from './service-account';
 export * from './public-ip';
