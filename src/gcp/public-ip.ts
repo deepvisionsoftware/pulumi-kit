@@ -28,6 +28,7 @@ export const usePublicIp = (args: UsePublicIpArgs, ctx: Context) => {
     name: srn(['ip', id]),
   }, {
     deleteBeforeReplace: true,
+    ignoreChanges: ['address', 'labelFingerprint'],
   });
 
   const alias = `${id}.${project}.gcloud`;
