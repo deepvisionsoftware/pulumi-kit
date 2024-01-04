@@ -9,7 +9,7 @@
   },
   "main": "dist/index.js",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "author": {
     "name": "DeepVision Code",
@@ -51,18 +51,18 @@
     }
   },
   "dependencies": {
-    "@pulumi/cloudflare": "^5.12.0",
-    "@pulumi/gcp": "^6.67.0",
-    "@pulumi/github": "5.20.0",
-    "@pulumi/google-native": "^0.31.1",
-    "@pulumi/pulumi": "^3.87.0",
-    "yaml": "^2.3.2"
+    "@pulumi/cloudflare": "^5.17.0",
+    "@pulumi/gcp": "^7.4.0",
+    "@pulumi/github": "^5.23.0",
+    "@pulumi/google-native": "^0.32.0",
+    "@pulumi/pulumi": "^3.100.0",
+    "yaml": "^2.3.4"
   },
   "devDependencies": {
-    "@deepvision/eslint-plugin": "^1.1.23",
-    "@types/node": "^18.18.4",
-    "concurrently": "^8.2.1",
+    "@deep/eslint-plugin": "^1.1.27",
+    "@types/node": "^20.10.6",
+    "concurrently": "^8.2.2",
     "tsc-alias": "^1.8.8",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   }
 }
