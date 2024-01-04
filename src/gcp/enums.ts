@@ -92,4 +92,8 @@ export enum GcpServices {
   DRIVE = 'drive',
   /** Cloud Functions */
   CLOUDFUNCTIONS = 'cloudfunctions',
+  /** Filestore (NFS) */
+  FILE = 'file',
+  /** VPC Access */
+  VPC_ACCESS = 'vpcaccess',
 }

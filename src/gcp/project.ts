@@ -3,7 +3,6 @@ import { readFile } from 'node:fs/promises';
 import { projects as GcpProjects } from '@pulumi/gcp';
 import { Project as GcpProject } from '@pulumi/gcp/organizations';
 import { v3 as CloudResourceManager } from '@pulumi/google-native/cloudresourcemanager';
-import pulumi from '@pulumi/pulumi';
 import { parse } from 'yaml';
 
 import { BaseContext, ContextWithGcp } from '@/context';
@@ -140,7 +139,7 @@ interface GrantUserRolesArgs {
  * @param ctx - The Pulumi context object.
  * @param deps - An optional array of resources to add as dependencies.
  */
-export const grantUserRoles = (args: GrantUserRolesArgs, ctx: Context, deps: pulumi.Resource[] = []) => {
+export const grantUserRoles = (args: GrantUserRolesArgs, ctx: Context) => {
   const {
     roles,
     userEmail,
