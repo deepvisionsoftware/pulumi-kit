@@ -198,7 +198,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
           repository: repo.name,
           username: user.github.login,
           permission: userRef.role,
-        });
+        }, { dependsOn: [ghRepo] });
       }
     }
 
@@ -214,7 +214,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
           repository: repo.name,
           teamId: team.github.name,
           permission: teamRef.role,
-        });
+        }, { dependsOn: [ghRepo] });
       }
     }
 
@@ -234,7 +234,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
           repository: repo.name,
           variableName: variableRef.key,
           value: secretValue,
-        });
+        }, { dependsOn: [ghRepo] });
       }
     }
 
@@ -254,7 +254,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
           repository: repo.name,
           secretName: secretRef.key,
           plaintextValue: secretValue,
-        });
+        }, { dependsOn: [ghRepo] });
       }
     }
 
@@ -268,7 +268,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
             dismissStaleReviews: true,
             requiredApprovingReviewCount: 1,
           }],
-        });
+        }, { dependsOn: [ghRepo] });
       }
     }
 
