@@ -58,6 +58,8 @@ export enum GcpRoles {
   BIGQUERY_DATA_VIEWER = 'bigquery.dataViewer',
   /** Can run BigQuery jobs. */
   BIGQUERY_USER = 'bigquery.user',
+  /** Can register and provide the profiling data */
+  CLOUDPROFILER_AGENT = 'cloudprofiler.agent',
 }
 
 /**
@@ -92,4 +94,10 @@ export enum GcpServices {
   DRIVE = 'drive',
   /** Cloud Functions */
   CLOUDFUNCTIONS = 'cloudfunctions',
+  /** Filestore (NFS) */
+  FILE = 'file',
+  /** VPC Access */
+  VPC_ACCESS = 'vpcaccess',
+  /** Cloud Profiler */
+  CLOUD_PROFILER = 'cloudprofiler',
 }
