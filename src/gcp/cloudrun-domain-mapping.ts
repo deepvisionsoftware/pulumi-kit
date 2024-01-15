@@ -1,4 +1,4 @@
-import { paramCase } from '@deeepvision/textkit';
+import { paramCase } from '@deep/text-kit';
 import { DomainMapping } from '@pulumi/gcp/cloudrun';
 
 import { BaseContext, ContextWithGcp } from '@/context';

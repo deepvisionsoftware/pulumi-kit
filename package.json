@@ -51,7 +51,7 @@
     }
   },
   "dependencies": {
-    "@deeepvision/textkit": "^0.0.26",
+    "@deep/text-kit": "^1.0.1",
     "@pulumi/cloudflare": "^5.18.1",
     "@pulumi/gcp": "^7.5.0",
     "@pulumi/github": "^5.25.0",
