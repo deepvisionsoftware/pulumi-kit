@@ -57,6 +57,8 @@ export const useCloudRunBackend = (args: UseCloudRunBackendArgs, ctx: Context) =
     ],
     enableCDN: env !== Env.DEV,
     compressionMode: env !== Env.DEV ? BackendServiceCompressionMode.Automatic : undefined,
+  }, {
+    ignoreChanges: ['usedBy'],
   });
 
   return backend;
