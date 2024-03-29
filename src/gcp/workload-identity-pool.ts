@@ -25,14 +25,14 @@ export const useWorkloadIdentityPoolForGithub = (args: UseWorkloadIdentityPoolFo
     rn
   } = ctx;
 
-  new Iam.WorkloadIdentityPool(rn(['iam', 'gcp', 'wip', 'github']), {
+  const wip = new Iam.WorkloadIdentityPool(rn(['iam', 'gcp', 'wip', 'github']), {
     workloadIdentityPoolId: 'github',
     displayName: 'GitHub Pool',
     project: projectId,
     location: 'global',
   });
 
-  useServiceAccount({
+  const sa = useServiceAccount({
     name: 'github-wip',
     displayName: 'GitHub Workload Identity',
     project: projectId,
@@ -57,12 +57,12 @@ export const useWorkloadIdentityPoolForGithub = (args: UseWorkloadIdentityPoolFo
         'attribute.repository': 'assertion.repository',
       },
       attributeCondition: `assertion.repository_owner == '${org}'`,
-    });
+    }, { dependsOn: [wip] });
 
     new GcpServiceAccount.IAMMember(rn(['iam', 'gcp', 'wip', 'github', 'sa', org]), {
       serviceAccountId: `projects/${projectId}/serviceAccounts/github-wip@${projectId}.iam.gserviceaccount.com`,
       role: `roles/${GcpRoles.IAM_WORKLOAD_IDENTITY_USER}`,
       member: `principalSet://iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/github/attribute.repository_owner/${org}`,
-    });
+    }, { dependsOn: [wip, sa] });
   }
 }
