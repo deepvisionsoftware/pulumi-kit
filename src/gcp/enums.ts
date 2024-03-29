@@ -6,6 +6,8 @@ export enum GcpRoles {
   EDITOR = 'editor',
   /** Can create and manage service accounts, keys, and IAM policies. */
   IAM_SECURITY_ADMIN = 'iam.securityAdmin',
+  /** Can be used in Workload Identity Pool mappings. */
+  IAM_WORKLOAD_IDENTITY_USER = 'iam.workloadIdentityUser',
   /** Can create and manage IAM policies for the project and all resources within the project. */
   PROJECT_IAM_ADMIN = 'resourcemanager.projectIamAdmin',
   /** Can create and manage service accounts. */

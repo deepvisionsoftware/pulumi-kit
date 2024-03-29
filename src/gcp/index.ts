@@ -10,3 +10,4 @@ export * from './cloudsql';
 export * from './storage-bucket';
 export * from './artifact-registry';
 export * from './cloudscheduler';
+export * from './workload-identity-pool';
