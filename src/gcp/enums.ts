@@ -102,4 +102,6 @@ export enum GcpServices {
   VPC_ACCESS = 'vpcaccess',
   /** Cloud Profiler */
   CLOUD_PROFILER = 'cloudprofiler',
+  /** Calendar JSON */
+  CALENDAR_JSON = 'calendar-json',
 }
