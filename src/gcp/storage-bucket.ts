@@ -36,6 +36,11 @@ interface UseStorageBucketArgs {
    */
   isCorsEnabled?: boolean;
   /**
+   * Whether soft delete should be enabled for the storage bucket. Defaults to false.
+   * @example true
+   */
+  isSoftDeleteEnabled?: boolean;
+  /**
    * Whether to create a backend for the storage bucket. Defaults to true.
    * @example false
    */
@@ -60,6 +65,7 @@ export const useStorageBucket = (args: UseStorageBucketArgs, ctx: Context) => {
     prefix,
     isPublic = false,
     isCorsEnabled = false,
+    isSoftDeleteEnabled = false,
     shouldCreateBackend = false,
     customName,
   } = args;
@@ -88,6 +94,9 @@ export const useStorageBucket = (args: UseStorageBucketArgs, ctx: Context) => {
         enabled: true,
       },
     },
+    softDeletePolicy: isSoftDeleteEnabled ? {
+      retentionDurationSeconds: '604800', // 7 days
+    } : undefined,
   }, {
     ignoreChanges: ['etag', 'metageneration', 'updated'],
   });

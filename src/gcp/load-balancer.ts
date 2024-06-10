@@ -293,7 +293,8 @@ export const useLoadBalancer = async (args: UseLoadBalancerArgs, ctx: Context) =
     description: useManagedByDescription(ctx),
     urlMap: urlMap.id,
     certificateMap: certMap.name.apply((certMapName) => `//certificatemanager.googleapis.com/${certMapName}`),
-  });
+    quicOverride: 'NONE',
+  }, { ignoreChanges: ['fingerprint'] });
 
   // Create HTTPS forwarding rule
   new Compute.GlobalForwardingRule(rn(['net', 'gcp', 'fwd', httpsProxyName]), {
