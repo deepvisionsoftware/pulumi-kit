@@ -130,6 +130,9 @@ export const useStorageBucket = (args: UseStorageBucketArgs, ctx: Context) => {
       description: useManagedByDescription(ctx),
       bucketName: bucket.name,
       enableCdn: env === Env.PROD || isCdnEnabled,
+      customResponseHeaders: [
+        'Cache-Status: {cdn_cache_status}',
+      ],
     }, {
       dependsOn: [bucket],
     });
