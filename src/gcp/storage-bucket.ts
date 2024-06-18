@@ -41,6 +41,10 @@ interface UseStorageBucketArgs {
    */
   isSoftDeleteEnabled?: boolean;
   /**
+   * Whether to enable CDN for the storage bucket. Defaults to false.
+   */
+  isCdnEnabled?: boolean;
+  /**
    * Whether to create a backend for the storage bucket. Defaults to true.
    * @example false
    */
@@ -64,6 +68,7 @@ export const useStorageBucket = (args: UseStorageBucketArgs, ctx: Context) => {
     name,
     prefix,
     isPublic = false,
+    isCdnEnabled = false,
     isCorsEnabled = false,
     isSoftDeleteEnabled = false,
     shouldCreateBackend = false,
@@ -124,7 +129,7 @@ export const useStorageBucket = (args: UseStorageBucketArgs, ctx: Context) => {
       name: srn(['bucket', name]),
       description: useManagedByDescription(ctx),
       bucketName: bucket.name,
-      enableCdn: env === Env.PROD,
+      enableCdn: env === Env.PROD || isCdnEnabled,
     }, {
       dependsOn: [bucket],
     });
