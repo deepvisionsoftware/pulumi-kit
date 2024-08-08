@@ -51,19 +51,19 @@
     }
   },
   "dependencies": {
-    "@deep/text-kit": "^1.0.5",
-    "@pulumi/cloudflare": "^5.30.0",
-    "@pulumi/gcp": "^7.26.0",
-    "@pulumi/github": "^6.2.1",
+    "@deep/text-kit": "^1.0.7",
+    "@pulumi/cloudflare": "^5.35.1",
+    "@pulumi/gcp": "^7.35.0",
+    "@pulumi/github": "^6.2.3",
     "@pulumi/google-native": "^0.32.0",
-    "@pulumi/pulumi": "^3.119.0",
-    "yaml": "^2.4.5"
+    "@pulumi/pulumi": "^3.128.0",
+    "yaml": "^2.5.0"
   },
   "devDependencies": {
-    "@deep/eslint-plugin": "^1.1.30",
-    "@types/node": "^20.14.2",
+    "@deep/eslint-plugin": "^1.1.32",
+    "@types/node": "^20.14.14",
     "concurrently": "^8.2.2",
     "tsc-alias": "^1.8.10",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   }
 }
