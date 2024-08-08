@@ -2,8 +2,6 @@ import {
   artifactregistry as GcpArtifactRegistry,
   projects as GcpProjects,
 } from '@pulumi/gcp';
-import { v1 as ArtifactRegistry } from '@pulumi/google-native/artifactregistry';
-import { RepositoryFormat } from '@pulumi/google-native/types/enums/artifactregistry/v1';
 import { Output } from '@pulumi/pulumi';
 
 import { BaseContext, ContextWithGcp } from '@/context';
@@ -25,11 +23,27 @@ export const useDockerRepository = (args: UseDockerRepositoryArgs, ctx: Context)
   const { gcp: { region, project }, rn } = ctx;
 
   const repoLocation = location ?? region.split('-').shift();
-  const repo = new ArtifactRegistry.Repository(rn(['root', 'gcp', 'docker', 'repo', name]), {
-    name: `projects/${project}/locations/${repoLocation}/repositories/${name}`,
+  const repo = new GcpArtifactRegistry.Repository(rn(['root', 'gcp', 'docker', 'repo', name]), {
     repositoryId: name,
-    format: RepositoryFormat.Docker,
+    format: 'DOCKER',
     location: repoLocation,
+    cleanupPolicies: [
+      {
+        id: 'delete-gt30-untagged',
+        action: 'DELETE',
+        condition: {
+          olderThan: '2592000s',
+          tagState: 'UNTAGGED',
+        },
+      },
+      {
+        id: 'keep-recent',
+        action: 'KEEP',
+        mostRecentVersions: {
+          keepCount: 5,
+        },
+      },
+    ],
   });
 
   if (isPublic) {
