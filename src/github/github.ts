@@ -50,6 +50,7 @@ interface GithubRepo {
   secrets?: Array<GithubSecret>;
   variables?: Array<GithubVariable>;
   features?: Array<GithubRepoFeature>;
+  isArchived?: boolean;
 }
 interface GithubRepoUser {
   id: string;
@@ -183,6 +184,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       allowRebaseMerge: false,
       allowSquashMerge: false,
       vulnerabilityAlerts: false,
+      archived: repo.isArchived ?? false,
     }, {
       ignoreChanges: ['mergeCommitMessage', 'mergeCommitTitle', 'squashMergeCommitMessage', 'squashMergeCommitTitle'],
     });
