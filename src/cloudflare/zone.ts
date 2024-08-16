@@ -133,7 +133,7 @@ export const useDnsRecord = (args: UseDnsRecordArgs, ctx: BaseContext) => {
   new Record(rn(['zone', zone.name, 'cf', type, name === '@' ? '_root' : name]), {
     zoneId: zone.cloudflare.zoneId,
     name: name === '@' ? zone.name : `${name}.${zone.name}`,
-    value,
+    content: value,
     type,
     proxied,
   });
