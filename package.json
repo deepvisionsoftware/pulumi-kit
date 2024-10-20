@@ -1,6 +1,6 @@
 {
   "name": "@deep/pulumi-kit",
-  "version": "1.1.20",
+  "version": "2.0.0",
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "concurrently \"tsc -w\" \"tsc-alias -w\"",
@@ -55,7 +55,6 @@
     "@pulumi/cloudflare": "^5.41.0",
     "@pulumi/gcp": "^8.6.0",
     "@pulumi/github": "^6.3.2",
-    "@pulumi/google-native": "^0.32.0",
     "@pulumi/pulumi": "^3.137.0",
     "yaml": "^2.6.0"
   },

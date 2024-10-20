@@ -48,11 +48,6 @@ export const useDockerRepository = (args: UseDockerRepositoryArgs, ctx: Context)
 
   if (isPublic) {
     const role = GcpRoles.ARTIFACT_REGISTRY_READER;
-    // new ArtifactRegistry.RepositoryIamBinding(rn(['iam', 'gcp', 'public', 'role', role]), {
-    //   name: repo.name,
-    //   role: `roles/${role}`,
-    //   members: ['allUsers'],
-    // }, { dependsOn: [repo] });
 
     new GcpArtifactRegistry.RepositoryIamMember(rn(['iam', 'gcp', 'public', 'role', role]), {
       location: repoLocation,
@@ -84,8 +79,6 @@ export const grantDockerRepositoryAccess = (args: GrantDockerRepositoryAccessArg
   } = args;
   const { rn } = ctx;
 
-  // TODO: temporary use Legacy GCP provider, while CloudResourceManager not working properly
-  // https://github.com/pulumi/pulumi-google-native/issues/714
   const role = GcpRoles.ARTIFACT_REGISTRY_READER;
   new GcpProjects.IAMMember(rn(['iam', 'gcp', 'sa', runProjectId, 'role', role]), {
     project: opsProject,

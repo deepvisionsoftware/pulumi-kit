@@ -1,15 +1,14 @@
 import { readFile } from 'node:fs/promises';
 
 import { projects as GcpProjects } from '@pulumi/gcp';
-import {
-  Project as GcpProject,
-  Folder as GcpFolder,
-} from '@pulumi/gcp/organizations';
+import { Project as GcpProject } from '@pulumi/gcp/organizations';
+import { v3 as CloudResourceManager } from '@pulumi/google-native/cloudresourcemanager';
 import { parse } from 'yaml';
 
 import { BaseContext, ContextWithGcp } from '@/context';
 import { ContextWithIam } from '@/iam';
 
+export interface GcpFolder extends CloudResourceManager.Folder {}
 export interface PlainProject {
   projectId: string;
   number: string;
@@ -57,7 +56,7 @@ interface UseProjectArgs {
   /**
    * The parent folder for the project.
    */
-  parentFolder?: GcpFolder;
+  parentFolder?: CloudResourceManager.Folder;
 }
 
 interface Context extends BaseContext, ContextWithGcp, ContextWithIam {}
