@@ -1,6 +1,6 @@
 import {
-  projects as GcpProjects,
-  serviceaccount as GcpServiceAccount,
+  projects,
+  serviceaccount,
 } from '@pulumi/gcp';
 import { Resource } from '@pulumi/pulumi';
 import { BaseContext, ContextWithGcp } from '@/context';
@@ -53,7 +53,7 @@ export const useServiceAccount = (args: UseServiceAccountArgs, ctx: Context, dep
   } = args;
   const { rn } = ctx;
 
-  const serviceAccount = new GcpServiceAccount.Account(rn(['iam', 'gcp', 'sa', project, name]), {
+  const serviceAccount = new serviceaccount.Account(rn(['iam', 'gcp', 'sa', project, name]), {
     accountId: name,
     description: useManagedByDescription(ctx),
     displayName,
@@ -63,7 +63,7 @@ export const useServiceAccount = (args: UseServiceAccountArgs, ctx: Context, dep
   });
 
   for (const role of roles) {
-    new GcpProjects.IAMMember(rn(['iam', 'gcp', 'sa', project, name, 'role', role]), {
+    new projects.IAMMember(rn(['iam', 'gcp', 'sa', project, name, 'role', role]), {
       project,
       role: `roles/${role}`,
       member: serviceAccount.email.apply((email) => `serviceAccount:${email}`),
@@ -117,7 +117,7 @@ export const grantServiceAccountRoles = (args: GrantServiceAccountRolesArgs, ctx
   }
 
   for (const role of roles) {
-    new GcpProjects.IAMMember(rn(['iam', 'gcp', 'sa', project, name, 'role', role]), {
+    new projects.IAMMember(rn(['iam', 'gcp', 'sa', project, name, 'role', role]), {
       project,
       role: `roles/${role}`,
       member: `serviceAccount:${serviceAccountEmail}`,

@@ -1,9 +1,9 @@
 export * from './enums';
-// export * from './cloudrun-backend';
+export * from './cloudrun-backend';
 // export * from './cloudrun-domain-mapping';
-// export * from './load-balancer';
+export * from './load-balancer';
 export * from './service-account';
-// export * from './public-ip';
+export * from './public-ip';
 export * from './project';
 // export * from './folder';
 // export * from './cloudsql';

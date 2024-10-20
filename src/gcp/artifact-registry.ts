@@ -1,6 +1,6 @@
 import {
-  artifactregistry as GcpArtifactRegistry,
-  projects as GcpProjects,
+  artifactregistry,
+  projects,
 } from '@pulumi/gcp';
 import { Output } from '@pulumi/pulumi';
 
@@ -23,7 +23,7 @@ export const useDockerRepository = (args: UseDockerRepositoryArgs, ctx: Context)
   const { gcp: { region, project }, rn } = ctx;
 
   const repoLocation = location ?? region.split('-').shift();
-  const repo = new GcpArtifactRegistry.Repository(rn(['root', 'gcp', 'docker', 'repo', name]), {
+  const repo = new artifactregistry.Repository(rn(['root', 'gcp', 'docker', 'repo', name]), {
     repositoryId: name,
     format: 'DOCKER',
     location: repoLocation,
@@ -49,7 +49,7 @@ export const useDockerRepository = (args: UseDockerRepositoryArgs, ctx: Context)
   if (isPublic) {
     const role = GcpRoles.ARTIFACT_REGISTRY_READER;
 
-    new GcpArtifactRegistry.RepositoryIamMember(rn(['iam', 'gcp', 'public', 'role', role]), {
+    new artifactregistry.RepositoryIamMember(rn(['iam', 'gcp', 'public', 'role', role]), {
       location: repoLocation,
       member: 'allUsers',
       repository: repo.name,
@@ -80,7 +80,7 @@ export const grantDockerRepositoryAccess = (args: GrantDockerRepositoryAccessArg
   const { rn } = ctx;
 
   const role = GcpRoles.ARTIFACT_REGISTRY_READER;
-  new GcpProjects.IAMMember(rn(['iam', 'gcp', 'sa', runProjectId, 'role', role]), {
+  new projects.IAMMember(rn(['iam', 'gcp', 'sa', runProjectId, 'role', role]), {
     project: opsProject,
     role: `roles/${role}`,
     member: typeof runProjectNumber === 'string'

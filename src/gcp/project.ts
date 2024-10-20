@@ -1,10 +1,8 @@
 import { readFile } from 'node:fs/promises';
-
-import { projects as GcpProjects } from '@pulumi/gcp';
 import {
-  Project as GcpProject,
-  Folder as GcpFolder,
-} from '@pulumi/gcp/organizations';
+  projects,
+  organizations,
+} from '@pulumi/gcp';
 import { parse } from 'yaml';
 
 import { BaseContext, ContextWithGcp } from '@/context';
@@ -57,11 +55,11 @@ interface UseProjectArgs {
   /**
    * The parent folder for the project.
    */
-  parentFolder?: GcpFolder;
+  parentFolder?: organizations.Folder;
 }
 
 interface Context extends BaseContext, ContextWithGcp, ContextWithIam {}
-export const useProject = (args: UseProjectArgs, ctx: Context): [GcpProject, Array<GcpProjects.Service>] => {
+export const useProject = (args: UseProjectArgs, ctx: Context): [organizations.Project, Array<projects.Service>] => {
   const {
     id,
     name,
@@ -72,7 +70,7 @@ export const useProject = (args: UseProjectArgs, ctx: Context): [GcpProject, Arr
   } = args;
   const { rn } = ctx;
 
-  const gcpProject = new GcpProject(rn(['root', 'gcp', 'project', id]), {
+  const gcpProject = new organizations.Project(rn(['root', 'gcp', 'project', id]), {
     projectId: id,
     name,
     billingAccount: billingAccountId,
@@ -84,7 +82,7 @@ export const useProject = (args: UseProjectArgs, ctx: Context): [GcpProject, Arr
 
   const gcpServices = [];
   for (const service of services) {
-    const gcpService = new GcpProjects.Service(rn(['root', 'gcp', 'project', id, 'service', service]), {
+    const gcpService = new projects.Service(rn(['root', 'gcp', 'project', id, 'service', service]), {
       disableDependentServices: true,
       project: id,
       service: `${service}.googleapis.com`,
@@ -135,7 +133,7 @@ export const grantUserRoles = (args: GrantUserRolesArgs, ctx: Context) => {
   const [name] = userEmail.split('@');
 
   for (const role of roles) {
-    new GcpProjects.IAMMember(rn(['iam', 'gcp', 'sa', project, name, 'role', role]), {
+    new projects.IAMMember(rn(['iam', 'gcp', 'sa', project, name, 'role', role]), {
       project,
       role: `roles/${role}`,
       member: `user:${userEmail}`,
@@ -158,9 +156,9 @@ export const useProjectIam = async (args: UseProjectIamArgs, ctx: Context) => {
   const { rn, iam: { getUserById } } = ctx;
 
   const projectsFile = `${projectRoot}/gcp.yml`;
-  const projects = parse(await readFile(projectsFile, 'utf-8')) as Array<GcpProjectSpec>;
+  const projectList = parse(await readFile(projectsFile, 'utf-8')) as Array<GcpProjectSpec>;
 
-  for (const projectSpec of projects) {
+  for (const projectSpec of projectList) {
     for (const userSpec of projectSpec.access?.users ?? []) {
       const user = getUserById(userSpec.id);
       if (!user?.email) {
@@ -168,7 +166,7 @@ export const useProjectIam = async (args: UseProjectIamArgs, ctx: Context) => {
       }
 
       for (const role of userSpec.roles) {
-        new GcpProjects.IAMMember(rn(['iam', 'gcp', 'u', projectSpec.id, user.id, 'role', role]), {
+        new projects.IAMMember(rn(['iam', 'gcp', 'u', projectSpec.id, user.id, 'role', role]), {
           project: projectSpec.id,
           role: `roles/${role}`,
           member: `user:${user.email}`,
