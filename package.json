@@ -1,6 +1,6 @@
 {
   "name": "@deep/pulumi-kit",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "concurrently \"tsc -w\" \"tsc-alias -w\"",
@@ -52,18 +52,18 @@
   },
   "dependencies": {
     "@deep/text-kit": "^1.0.7",
-    "@pulumi/cloudflare": "^5.36.0",
-    "@pulumi/gcp": "^7.37.0",
-    "@pulumi/github": "^6.2.3",
+    "@pulumi/cloudflare": "^5.41.0",
+    "@pulumi/gcp": "^7.38.0",
+    "@pulumi/github": "^6.3.2",
     "@pulumi/google-native": "^0.32.0",
-    "@pulumi/pulumi": "^3.129.0",
-    "yaml": "^2.5.0"
+    "@pulumi/pulumi": "^3.137.0",
+    "yaml": "^2.6.0"
   },
   "devDependencies": {
     "@deep/eslint-plugin": "^1.1.32",
-    "@types/node": "^20.14.15",
-    "concurrently": "^8.2.2",
+    "@types/node": "^20.16.13",
+    "concurrently": "^9.0.1",
     "tsc-alias": "^1.8.10",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.3"
   }
 }
