@@ -31,6 +31,11 @@
       "require": "./dist/gcp/index.js",
       "types": "./dist/gcp/index.d.ts"
     },
+    "./gcp/v2": {
+      "import": "./dist/gcp/v2/index.js",
+      "require": "./dist/gcp/v2/index.js",
+      "types": "./dist/gcp/v2/index.d.ts"
+    },
     "./github": {
       "import": "./dist/github/index.js",
       "require": "./dist/github/index.js",
@@ -53,7 +58,7 @@
   "dependencies": {
     "@deep/text-kit": "^1.0.7",
     "@pulumi/cloudflare": "^5.41.0",
-    "@pulumi/gcp": "^7.38.0",
+    "@pulumi/gcp": "^8.6.0",
     "@pulumi/github": "^6.3.2",
     "@pulumi/google-native": "^0.32.0",
     "@pulumi/pulumi": "^3.137.0",
