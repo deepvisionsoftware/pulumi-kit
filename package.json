@@ -31,11 +31,6 @@
       "require": "./dist/gcp/index.js",
       "types": "./dist/gcp/index.d.ts"
     },
-    "./gcp/v2": {
-      "import": "./dist/gcp/v2/index.js",
-      "require": "./dist/gcp/v2/index.js",
-      "types": "./dist/gcp/v2/index.d.ts"
-    },
     "./github": {
       "import": "./dist/github/index.js",
       "require": "./dist/github/index.js",
