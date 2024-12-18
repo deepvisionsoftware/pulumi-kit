@@ -113,6 +113,10 @@ interface UseDnsRecordArgs {
    * Whether or not the DNS record should be proxied through Cloudflare.
    */
   proxied?: boolean;
+  /**
+   * Comment to associate with the DNS record.
+   */
+  comment?: string;
 }
 
 /**
@@ -127,6 +131,7 @@ export const useDnsRecord = (args: UseDnsRecordArgs, ctx: BaseContext) => {
     name,
     value,
     proxied = false,
+    comment,
   } = args;
   const { rn } = ctx;
 
@@ -136,5 +141,6 @@ export const useDnsRecord = (args: UseDnsRecordArgs, ctx: BaseContext) => {
     content: value,
     type,
     proxied,
+    comment,
   });
 };
