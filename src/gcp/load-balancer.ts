@@ -292,7 +292,7 @@ export const useLoadBalancer = async (args: UseLoadBalancerArgs, ctx: Context) =
     name: srn([httpsProxyName, 'proxy']),
     description: useManagedByDescription(ctx),
     urlMap: urlMap.id,
-    certificateMap: certMap.name.apply((certMapName) => `//certificatemanager.googleapis.com/${certMapName}`),
+    certificateMap: certMap.name.apply((certMapName) => `//certificatemanager.googleapis.com/projects/${project}/locations/global/certificateMaps/${certMapName}`),
     quicOverride: 'NONE',
   }, { ignoreChanges: ['fingerprint'] });
 
