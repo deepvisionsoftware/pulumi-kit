@@ -1,4 +1,4 @@
-import { Record } from '@pulumi/cloudflare';
+import { DnsRecord } from '@pulumi/cloudflare';
 import { Output } from '@pulumi/pulumi';
 
 import { BaseContext } from '@/context';
@@ -41,7 +41,7 @@ enum DnsRecordType {
 /**
  * Represents a DNS record in a Cloudflare zone.
  */
-interface DnsRecord {
+interface CloudflareDnsRecord {
   /**
    * The name of the DNS record.
    * @example api
@@ -79,7 +79,7 @@ export interface CloudflareZone {
   /**
    * An optional array of DNS records associated with the zone.
    */
-  records?: Array<DnsRecord>;
+  records?: Array<CloudflareDnsRecord>;
 }
 
 /**
@@ -135,11 +135,12 @@ export const useDnsRecord = (args: UseDnsRecordArgs, ctx: BaseContext) => {
   } = args;
   const { rn } = ctx;
 
-  new Record(rn(['zone', zone.name, 'cf', type, name === '@' ? '_root' : name]), {
+  new DnsRecord(rn(['zone', zone.name, 'cf', type, name === '@' ? '_root' : name]), {
     zoneId: zone.cloudflare.zoneId,
     name: name === '@' ? zone.name : `${name}.${zone.name}`,
     content: value,
     type,
+    ttl: 1, // 'automatic'
     proxied,
     comment,
   });
