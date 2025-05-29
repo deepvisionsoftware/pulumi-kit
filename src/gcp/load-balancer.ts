@@ -365,7 +365,7 @@ export const useCertificateWithLoadBalancer = async (args: UseCertificateWithLoa
   new certificatemanager.CertificateMapEntry(rn(['net', 'gcp', 'certmap', certMapName, domainName]), {
     name: safeDomainName,
     map: certMapName,
-    certificates: [sslCert.name],
+    certificates: sslCert.name.apply((certName) => [`projects/${project}/locations/global/certificates/${certName}`]),
     hostname: domainName,
     description: useManagedByDescription(ctx),
   });
