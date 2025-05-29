@@ -198,7 +198,7 @@ export const useLoadBalancer = async (args: UseLoadBalancerArgs, ctx: Context) =
   // Create certificate map
   const certMapName = id;
   const certMap = new certificatemanager.CertificateMap(rn(['net', 'gcp', 'certmap', certMapName]), {
-    name: `projects/${project}/locations/global/certificateMaps/${certMapName}`,
+    name: certMapName,
     description: useManagedByDescription(ctx),
     project,
   });
@@ -351,7 +351,7 @@ export const useCertificateWithLoadBalancer = async (args: UseCertificateWithLoa
 
   const sslCert = new certificatemanager.Certificate(rn(['net', 'gcp', 'cert', domainName]), {
     location: 'global',
-    name: `projects/${project}/locations/global/certificates/${safeDomainName}`,
+    name: safeDomainName,
     description: useManagedByDescription(ctx),
     managed: {
       domains: [domainName],
