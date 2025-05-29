@@ -1,6 +1,6 @@
 {
   "name": "@deep/pulumi-kit",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "concurrently \"tsc -w\" \"tsc-alias -w\"",
