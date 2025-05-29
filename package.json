@@ -52,17 +52,16 @@
   },
   "dependencies": {
     "@deep/text-kit": "^1.0.8",
-    "@pulumi/cloudflare": "^5.49.1",
-    "@pulumi/gcp": "^8.29.0",
+    "@pulumi/cloudflare": "^6.2.0",
+    "@pulumi/gcp": "^8.32.1",
     "@pulumi/github": "^6.7.2",
-    "@pulumi/pulumi": "^3.167.0",
-    "yaml": "^2.7.1"
+    "@pulumi/pulumi": "^3.171.0",
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
-    "@deep/eslint-plugin": "^1.2.2",
-    "@types/node": "^20.17.32",
+    "@types/node": "^22.15.24",
     "concurrently": "^9.1.2",
-    "tsc-alias": "^1.8.15",
+    "tsc-alias": "^1.8.16",
     "typescript": "^5.8.3"
   }
 }
