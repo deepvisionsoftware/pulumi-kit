@@ -1,4 +1,5 @@
 .github/
 src/
+gcp-deprecated/
 tsconfig.json
 .eslintrc.js
