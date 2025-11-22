@@ -3,13 +3,11 @@
   "version": "2.0.12",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "dev": "concurrently \"tsc -w\" \"tsc-alias -w\"",
-    "lint": "eslint \"src/**/*.ts\"",
-    "lint:fix": "eslint --fix \"src/**/*.ts\""
+    "dev": "concurrently \"tsc -w\" \"tsc-alias -w\""
   },
   "main": "dist/index.js",
   "engines": {
-    "node": "22"
+    "node": "24"
   },
   "author": {
     "name": "DeepVision Code",
@@ -51,17 +49,16 @@
     }
   },
   "dependencies": {
-    "@deep/text-kit": "^1.0.8",
-    "@pulumi/cloudflare": "^6.2.0",
-    "@pulumi/gcp": "^8.32.1",
-    "@pulumi/github": "^6.7.2",
-    "@pulumi/pulumi": "^3.171.0",
-    "yaml": "^2.8.0"
+    "@pulumi/cloudflare": "^6.11.0",
+    "@pulumi/gcp": "^8.41.1",
+    "@pulumi/github": "^6.9.1",
+    "@pulumi/pulumi": "^3.208.0",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "@types/node": "^22.15.24",
-    "concurrently": "^9.1.2",
+    "@types/node": "^24.10.1",
+    "concurrently": "^9.2.1",
     "tsc-alias": "^1.8.16",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   }
 }
