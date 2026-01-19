@@ -1,34 +1,66 @@
-name: Publish Package
+name: Publish to NPM
 
 on:
   push:
     branches:
       - v*
 
-jobs:
-  build:
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      id-token: write
+env:
+  PACKAGE_NAME: '@pcg/pulumi-kit'
 
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    outputs:
+      should-publish: ${{ steps.check.outputs.should-publish }}
     steps:
       - id: checkout
         name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - id: auth
-        name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - id: check
+        name: Check published version
+        uses: actions/github-script@v8
         with:
-          token_format: access_token
-          workload_identity_provider: ${{ vars.GCP_AUTH_WORKLOAD_IDENTITY_POOL }}
-          service_account: ${{ vars.GCP_AUTH_SERVICE_ACCOUNT }}
-          create_credentials_file: false
+          script: |
+            const fs = require('fs');
+            const packageJson = JSON.parse(await fs.promises.readFile('./package.json', 'utf8'));
+            const currentVersion = packageJson.version;
+
+            console.log(`📦 Local version: ${currentVersion}`);
+
+            const response = await fetch('https://registry.npmjs.org/${{ env.PACKAGE_NAME }}?fields=versions');
+            const data = await response.json();
+
+            const versionExists = data.versions && currentVersion in data.versions;
+
+            if (versionExists) {
+              console.log(`🚧 Version ${currentVersion} already exists in npm registry. Skipping publish.`);
+              core.setOutput('should-publish', 'false');
+            } else {
+              console.log(`👷⬆️ Version ${currentVersion} does not exist in npm registry. Will publish.`);
+              core.setOutput('should-publish', 'true');
+            }
+
+  publish:
+    runs-on: ubuntu-24.04
+    needs: check
+    if: needs.check.outputs.should-publish == 'true'
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v6
+
+      - id: setup-node
+        name: Setup Node.js v24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
 
       - id: publish
-        name: Publish Package
-        uses: docker://us-docker.pkg.dev/deepops/pub/github-action-npm:1.0
-        with:
-          registry: us-npm.pkg.dev/deepops/deep
-          authToken: ${{ steps.auth.outputs.access_token }}
+        name: Publish to NPM
+        run: npm publish

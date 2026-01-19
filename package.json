@@ -1,11 +1,12 @@
 {
-  "name": "@deep/pulumi-kit",
-  "version": "2.0.13",
+  "name": "@pcg/pulumi-kit",
+  "version": "2.1.0",
+  "type": "module",
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "dev": "concurrently \"tsc -w\" \"tsc-alias -w\""
+    "build": "rolldown --config && tsc --emitDeclarationOnly"
   },
   "main": "dist/index.js",
+  "files": ["dist"],
   "engines": {
     "node": "24"
   },
@@ -15,24 +16,20 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./cloudflare": {
-      "import": "./dist/cloudflare/index.js",
-      "require": "./dist/cloudflare/index.js",
-      "types": "./dist/cloudflare/index.d.ts"
+      "types": "./dist/cloudflare/index.d.ts",
+      "import": "./dist/cloudflare/index.js"
     },
     "./gcp": {
-      "import": "./dist/gcp/index.js",
-      "require": "./dist/gcp/index.js",
-      "types": "./dist/gcp/index.d.ts"
+      "types": "./dist/gcp/index.d.ts",
+      "import": "./dist/gcp/index.js"
     },
     "./github": {
-      "import": "./dist/github/index.js",
-      "require": "./dist/github/index.js",
-      "types": "./dist/github/index.d.ts"
+      "types": "./dist/github/index.d.ts",
+      "import": "./dist/github/index.js"
     }
   },
   "typesVersions": {
@@ -49,16 +46,15 @@
     }
   },
   "dependencies": {
-    "@pulumi/cloudflare": "^6.11.0",
-    "@pulumi/gcp": "^8.41.1",
-    "@pulumi/github": "^6.9.1",
-    "@pulumi/pulumi": "^3.208.0",
-    "yaml": "^2.8.1"
+    "@pulumi/cloudflare": "^6.12.0",
+    "@pulumi/gcp": "^9.10.0",
+    "@pulumi/github": "^6.10.1",
+    "@pulumi/pulumi": "^3.216.0",
+    "yaml": "^2.8.2"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
-    "concurrently": "^9.2.1",
-    "tsc-alias": "^1.8.16",
+    "@types/node": "^24.10.9",
+    "rolldown": "^1.0.0-beta.53",
     "typescript": "^5.9.3"
   }
 }
