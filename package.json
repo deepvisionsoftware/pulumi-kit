@@ -11,8 +11,12 @@
     "node": "24"
   },
   "author": {
-    "name": "DeepVision Code",
-    "email": "code@deepvision.team"
+    "name": "DeepVision Software",
+    "email": "code@deepvision.software"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deepvisionsoftware/pulumi-kit"
   },
   "exports": {
     ".": {
