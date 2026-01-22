@@ -1,7 +1,7 @@
-export * from './helpers/description';
-export * from './helpers/resource-names';
-export * from './helpers/services';
+export * from './helpers/description.js';
+export * from './helpers/resource-names.js';
+export * from './helpers/services.js';
 
-export * from './context';
-export * from './iam';
-export * from './env';
+export * from './context.js';
+export * from './iam.js';
+export * from './env.js';

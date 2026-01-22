@@ -14,8 +14,8 @@ import {
 } from '@pulumi/github';
 import { parse } from 'yaml';
 
-import { BaseContext } from '@/context';
-import { ContextWithIam } from '@/iam';
+import { type BaseContext } from '@/context.js';
+import { type ContextWithIam } from '@/iam.js';
 
 interface Context extends BaseContext, ContextWithIam {}
 
@@ -43,13 +43,13 @@ interface GithubRepo {
   homepage?: string;
   access?: {
     public?: boolean;
-    users: Array<GithubRepoUser>;
-    teams: Array<GithubRepoTeam>;
+    users: GithubRepoUser[];
+    teams: GithubRepoTeam[];
   };
   protection?: boolean;
-  secrets?: Array<GithubSecret>;
-  variables?: Array<GithubVariable>;
-  features?: Array<GithubRepoFeature>;
+  secrets?: GithubSecret[];
+  variables?: GithubVariable[];
+  features?: GithubRepoFeature[];
   isArchived?: boolean;
 }
 interface GithubRepoUser {
@@ -104,7 +104,7 @@ enum GithubTeamPrivacy {
  */
 const mainBranches = ['dev', 'stage', 'master'];
 
-interface UseGithubArgs {}
+type UseGithubArgs = Record<string, never>;
 
 /**
  * Creates and configures organization variables, teams, and secrets for GitHub.
@@ -170,7 +170,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
   } = ctx;
 
   const githubReposFile = `${projectRoot}/github.yml`;
-  const githubRepos = parse(await readFile(githubReposFile, 'utf-8')) as Array<GithubRepo>;
+  const githubRepos = parse(await readFile(githubReposFile, 'utf-8')) as GithubRepo[];
 
   // Repositories
   for (const repo of githubRepos) {
@@ -227,7 +227,8 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
           throw new Error(`Variable ${variableRef.key} does not have a value or valueFrom`);
         }
 
-        const secretValue = variableRef.value || (await getSecretValue(variableRef.valueFrom!));
+        const secretValue = variableRef.value
+          || (variableRef.valueFrom && await getSecretValue(variableRef.valueFrom));
         if (!secretValue) {
           throw new Error(`Secret value ${variableRef.valueFrom} not found`);
         }
@@ -247,7 +248,8 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
           throw new Error(`Variable ${secretRef.key} does not have a value or valueFrom`);
         }
 
-        const secretValue = secretRef.value || (await getSecretValue(secretRef.valueFrom!));
+        const secretValue = secretRef.value
+          || (secretRef.valueFrom && await getSecretValue(secretRef.valueFrom));
         if (!secretValue) {
           throw new Error(`Secret value ${secretRef.valueFrom} not found`);
         }

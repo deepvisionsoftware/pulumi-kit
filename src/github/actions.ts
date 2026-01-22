@@ -1,8 +1,8 @@
 import { ActionsOrganizationVariable } from '@pulumi/github';
 
-import { BaseContext } from '@/context';
+import { type BaseContext } from '@/context.js';
 
-interface Context extends BaseContext {}
+type Context = BaseContext;
 
 interface UseOrgVariableArgs {
   name: string;

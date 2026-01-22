@@ -1,7 +1,7 @@
 import { DnsRecord } from '@pulumi/cloudflare';
-import { Output } from '@pulumi/pulumi';
+import { type Output } from '@pulumi/pulumi';
 
-import { BaseContext } from '@/context';
+import { type BaseContext } from '@/context.js';
 
 /**
  * Represents a link between a Cloudflare zone and its account.
@@ -79,7 +79,7 @@ export interface CloudflareZone {
   /**
    * An optional array of DNS records associated with the zone.
    */
-  records?: Array<CloudflareDnsRecord>;
+  records?: CloudflareDnsRecord[];
 }
 
 /**

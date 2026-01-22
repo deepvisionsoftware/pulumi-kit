@@ -12,7 +12,7 @@ export const isFileExists = async (path: string) => {
     await stat(path);
 
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };

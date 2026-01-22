@@ -3,16 +3,16 @@ import {
   compute,
 } from '@pulumi/gcp';
 import {
-  BackendService,
-  BackendBucket,
-  GlobalAddress,
+  type BackendService,
+  type BackendBucket,
+  type GlobalAddress,
 } from '@pulumi/gcp/compute';
-import { Output } from '@pulumi/pulumi';
+import { type Output } from '@pulumi/pulumi';
 
-import { CloudflareZone, useDnsRecord } from '@/cloudflare/zone';
-import { BaseContext, ContextWithGcp } from '@/context';
-import { useEnvSuffix } from '@/env';
-import { useManagedByDescription } from '@/helpers/description';
+import { type CloudflareZone, useDnsRecord } from '@/cloudflare/zone.js';
+import { type BaseContext, type ContextWithGcp } from '@/context.js';
+import { useEnvSuffix } from '@/env.js';
+import { useManagedByDescription } from '@/helpers/description.js';
 
 /**
  * Represents a service that can be load balanced.
@@ -56,12 +56,12 @@ interface UseLoadBalancerArgs {
   /**
    * The services to load balance.
    */
-  services: Array<Service>;
+  services: Service[];
 
   /**
    * The redirects to add to the load balancer.
    */
-  redirects?: Array<Redirect>;
+  redirects?: Redirect[];
 
   /**
    * The default domain to redirect to if no host is specified.
@@ -101,12 +101,12 @@ interface UrlMapArgs {
   /**
    * The host rules for the URL map.
    */
-  hostRules: Array<UrlHostRule>;
+  hostRules: UrlHostRule[];
 
   /**
    * The path matchers for the URL map.
    */
-  pathMatchers: Array<UrlPathMatcher>;
+  pathMatchers: UrlPathMatcher[];
 
   /**
    * The description of the URL map.
@@ -118,7 +118,7 @@ interface UrlHostRule {
   /**
    * The hosts to match.
    */
-  hosts: Array<string>;
+  hosts: string[];
   /**
    * The name of the path matcher to use.
    */

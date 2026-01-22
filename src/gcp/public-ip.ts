@@ -1,9 +1,9 @@
 import {
-  compute
+  compute,
 } from '@pulumi/gcp';
 
-import { CloudflareZone, useDnsRecord } from '@/cloudflare/zone';
-import { BaseContext, ContextWithGcp } from '@/context';
+import { type CloudflareZone, useDnsRecord } from '@/cloudflare/zone.js';
+import { type BaseContext, type ContextWithGcp } from '@/context.js';
 
 interface UsePublicIpArgs {
   id?: string;

@@ -1,4 +1,4 @@
-import { Env } from '@/env';
+import { Env } from '@/env.js';
 
 interface UseResourceNameFactoryArgs {
   isSafe: boolean;
@@ -17,7 +17,7 @@ interface UseResourceNameFactoryArgs {
  * const rn = useResourceNameFactory(Env.PROD, { isSafe: true });
  * rn('my-resource'); // my-resource-prod
  */
-export const useResourceNameFactory = (env: Env, args?: UseResourceNameFactoryArgs) => (name: string | Array<string>): string => {
+export const useResourceNameFactory = (env: Env, args?: UseResourceNameFactoryArgs) => (name: string | string[]): string => {
   const { isSafe = false } = args || {
   };
 

@@ -5,8 +5,8 @@ import {
 } from '@pulumi/gcp';
 import { parse } from 'yaml';
 
-import { BaseContext, ContextWithGcp } from '@/context';
-import { ContextWithIam } from '@/iam';
+import { type BaseContext, type ContextWithGcp } from '@/context.js';
+import { type ContextWithIam } from '@/iam.js';
 
 export interface PlainProject {
   projectId: string;
@@ -16,12 +16,12 @@ export interface PlainProject {
 export interface GcpProjectSpec {
   id: string;
   access?: {
-    users?: Array<GcpUserSpec>;
+    users?: GcpUserSpec[];
   };
 }
 interface GcpUserSpec {
   id: string;
-  roles: Array<string>;
+  roles: string[];
 }
 
 /**
@@ -46,7 +46,7 @@ interface UseProjectArgs {
   /**
    * An optional array of service names to enable for the project.
    */
-  services?: Array<string>;
+  services?: string[];
   /**
    * The ID of the parent organization for the project.
    * @example deepvision
@@ -59,7 +59,7 @@ interface UseProjectArgs {
 }
 
 interface Context extends BaseContext, ContextWithGcp, ContextWithIam {}
-export const useProject = (args: UseProjectArgs, ctx: Context): [organizations.Project, Array<projects.Service>] => {
+export const useProject = (args: UseProjectArgs, ctx: Context): [organizations.Project, projects.Service[]] => {
   const {
     id,
     name,
@@ -102,7 +102,7 @@ interface GrantUserRolesArgs {
   /**
    * The roles to grant to the user.
    */
-  roles: Array<string>;
+  roles: string[];
   /**
    * The email address of the user to grant roles to.
    * @example john.doe@example.com
@@ -115,7 +115,6 @@ interface GrantUserRolesArgs {
   project: string;
 }
 
-// eslint-disable-next-line  @typescript-eslint/no-unused-vars
 /**
  * Grants user roles to a specified user in a Google Cloud Platform project.
  * @param args - The arguments for granting user roles.
@@ -156,7 +155,7 @@ export const useProjectIam = async (args: UseProjectIamArgs, ctx: Context) => {
   const { rn, iam: { getUserById } } = ctx;
 
   const projectsFile = `${projectRoot}/gcp.yml`;
-  const projectList = parse(await readFile(projectsFile, 'utf-8')) as Array<GcpProjectSpec>;
+  const projectList = parse(await readFile(projectsFile, 'utf-8')) as GcpProjectSpec[];
 
   for (const projectSpec of projectList) {
     for (const userSpec of projectSpec.access?.users ?? []) {

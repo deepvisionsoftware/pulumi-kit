@@ -1,5 +1,5 @@
-import { ContextWithServices, ServiceConfig } from '@/context';
-import { Env } from '@/env';
+import { type ContextWithServices, type ServiceConfig } from '@/context.js';
+import { Env } from '@/env.js';
 
 /**
  * Returns the service configuration object with the given name, if it exists in the provided context.

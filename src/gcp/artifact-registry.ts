@@ -2,10 +2,10 @@ import {
   artifactregistry,
   projects,
 } from '@pulumi/gcp';
-import { Output } from '@pulumi/pulumi';
+import { type Output } from '@pulumi/pulumi';
 
-import { BaseContext, ContextWithGcp } from '@/context';
-import { GcpRoles } from '@/gcp/enums';
+import { type BaseContext, type ContextWithGcp } from '@/context.js';
+import { GcpRoles } from '@/gcp/enums.js';
 
 interface UseDockerRepositoryArgs {
   name: string;
@@ -20,7 +20,7 @@ export const useDockerRepository = (args: UseDockerRepositoryArgs, ctx: Context)
     location,
     isPublic = false,
   } = args;
-  const { gcp: { region, project }, rn } = ctx;
+  const { gcp: { region }, rn } = ctx;
 
   const repoLocation = location ?? region.split('-').shift();
   const repo = new artifactregistry.Repository(rn(['root', 'gcp', 'docker', 'repo', name]), {

@@ -3,9 +3,9 @@ import {
   compute,
 } from '@pulumi/gcp';
 
-import { BaseContext, ContextWithGcp } from '@/context';
-import { Env } from '@/env';
-import { useManagedByDescription } from '@/helpers/description';
+import { type BaseContext, type ContextWithGcp } from '@/context.js';
+import { Env } from '@/env.js';
+import { useManagedByDescription } from '@/helpers/description.js';
 
 enum BackendType {
   HTTP = 'http',

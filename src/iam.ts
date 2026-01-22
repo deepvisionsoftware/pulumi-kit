@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises';
 
 import { parse } from 'yaml';
 
-import { isFileExists } from '@/helpers/tools';
-import { Maybe } from '@/helpers/types';
+import { isFileExists } from '@/helpers/tools.js';
+import { type Maybe } from '@/helpers/types.js';
 
 /**
  * Context object that contains IAM-related properties and methods.
@@ -13,7 +13,7 @@ export interface ContextWithIam {
     /**
      * Array of IAM users.
      */
-    users: Array<IamUser>;
+    users: IamUser[];
 
     /**
      * Returns an IAM user by ID.
@@ -25,12 +25,12 @@ export interface ContextWithIam {
     /**
      * Array of IAM teams.
      */
-    teams: Array<IamTeam>;
+    teams: IamTeam[];
 
     /**
      * Array of IAM secrets.
      */
-    secrets: Array<IamSecret>;
+    secrets: IamSecret[];
 
     /**
      * Returns the value of an IAM secret by ID.
@@ -108,7 +108,7 @@ interface IamTeam {
     org: string;
     name: string;
   };
-  members: Array<IamUser>;
+  members: IamUser[];
 }
 
 interface IamSecret {
@@ -122,11 +122,11 @@ interface IamSecret {
   };
 }
 
-const getUserByIdFactory = (users: Array<IamUser>) => (id: string): Maybe<IamUser> => {
+const getUserByIdFactory = (users: IamUser[]) => (id: string): Maybe<IamUser> => {
   return users.find((user) => user.id === id);
 };
 
-const getSecretValueFactory = (secrets: Array<IamSecret>) => (id: string): Maybe<string> => {
+const getSecretValueFactory = (secrets: IamSecret[]) => (id: string): Maybe<string> => {
   // local::cf/hccloud/access-token/pages230412
   // gcs::cf/hccloud/access-token/pages230412
   const secretExpr = /^(?<source>[a-z]+)::(?<id>.+)$/;
@@ -153,24 +153,24 @@ export const useIamContext = async (): Promise<ContextWithIam> => {
   // Load Users
   const usersFilePath = 'src/iam/users.yml';
   const users = await isFileExists(usersFilePath)
-    ? parse(await readFile(usersFilePath, 'utf-8')) as Array<IamUser>
+    ? parse(await readFile(usersFilePath, 'utf-8')) as IamUser[]
     : [];
 
   // Load Secrets
   const secretsFilePath = 'src/iam/secrets.yml';
   const secrets = await isFileExists(secretsFilePath)
-    ? parse(await readFile(secretsFilePath, 'utf-8')) as Array<IamSecret>
+    ? parse(await readFile(secretsFilePath, 'utf-8')) as IamSecret[]
     : [];
 
   // Load Teams
   const teamsFilePath = 'src/iam/teams.yml';
   const teams = await isFileExists(teamsFilePath)
-    ? parse(await readFile(teamsFilePath, 'utf-8')) as Array<IamTeam>
+    ? parse(await readFile(teamsFilePath, 'utf-8')) as IamTeam[]
     : [];
-  const resolvedTeams: Array<IamTeam> = [];
+  const resolvedTeams: IamTeam[] = [];
 
   for (const team of teams) {
-    const members: Array<IamUser> = [];
+    const members: IamUser[] = [];
     for (const member of team.members) {
       const resolvedMember = users.find((user) => user.id === member.id);
       if (!resolvedMember) {

@@ -1,4 +1,4 @@
-import { BaseContext } from '@/context';
+import { type BaseContext } from '@/context.js';
 
 /**
  * Returns a description string indicating that the resource is managed by DeepOps.

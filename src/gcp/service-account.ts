@@ -2,9 +2,9 @@ import {
   projects,
   serviceaccount,
 } from '@pulumi/gcp';
-import { Resource } from '@pulumi/pulumi';
-import { BaseContext, ContextWithGcp } from '@/context';
-import { dashToCamelWithSpaces, useManagedByDescription } from '@/helpers/description';
+import { type Resource } from '@pulumi/pulumi';
+import { type BaseContext, type ContextWithGcp } from '@/context.js';
+import { dashToCamelWithSpaces, useManagedByDescription } from '@/helpers/description.js';
 
 /**
  * Arguments for creating a new service account.
@@ -32,7 +32,7 @@ interface UseServiceAccountArgs {
    * An array of roles to grant to the service account.
    * @example ['storage.admin']
    */
-  roles: Array<string>;
+  roles: string[];
 }
 
 interface Context extends BaseContext, ContextWithGcp {}
@@ -80,7 +80,7 @@ interface GrantServiceAccountRolesArgs {
   /**
    * The roles to grant to the service account.
    * */
-  roles: Array<string>;
+  roles: string[];
   /**
    * The email address of the service account.
    * */

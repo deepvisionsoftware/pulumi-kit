@@ -3,10 +3,14 @@
   "version": "2.1.1",
   "type": "module",
   "scripts": {
-    "build": "rolldown --config && tsc --emitDeclarationOnly"
+    "build": "rolldown --config && tsc --emitDeclarationOnly",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": "24"
   },
@@ -58,6 +62,7 @@
     "yaml": "^2.8.2"
   },
   "devDependencies": {
+    "@deepvision/eslint-plugin": "2.0.0-rc.10",
     "@types/node": "^24.10.9",
     "rolldown": "^1.0.0-beta.53",
     "typescript": "^5.9.3"

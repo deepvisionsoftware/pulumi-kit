@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises';
 
 import { getStack } from '@pulumi/pulumi';
 
-import { Env } from './env';
-import { useResourceNameFactory } from './helpers/resource-names';
+import { Env } from './env.js';
+import { useResourceNameFactory } from './helpers/resource-names.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface BaseContext<T = any> {
@@ -29,14 +29,14 @@ export interface BaseContext<T = any> {
    * @example rn('my-resource'); // my-resource:prod
    * @example rn(['my', 'resource']); // my/resource:prod
    */
-  rn: (name: string | Array<string>) => string;
+  rn: (name: string | string[]) => string;
 
   /**
    * Returns a safe resource name based on the provided environment and name.
    * @param name - The name to use in the resource name.
    * @returns A safe resource name based on the provided environment and name.
    */
-  srn: (name: string | Array<string>) => string;
+  srn: (name: string | string[]) => string;
 }
 
 /**
@@ -94,7 +94,7 @@ export interface ServiceConfig {
   };
 }
 export interface ContextWithServices {
-  services: Array<ServiceConfig>;
+  services: ServiceConfig[];
 }
 
 export const useBaseContext = async (): Promise<BaseContext> => {
@@ -121,4 +121,3 @@ const usePackageConfig = async (): Promise<PackageConfig> => {
 
   return JSON.parse(packageJson);
 };
-
