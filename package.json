@@ -11,9 +11,6 @@
     "node": "24"
   },
   "packageManager": "pnpm@10.28.1",
-  "publishConfig": {
-    "branch": "v2"
-  },
   "author": {
     "name": "DeepVision Software",
     "email": "code@deepvision.software"

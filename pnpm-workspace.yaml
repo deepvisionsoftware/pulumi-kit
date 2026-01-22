@@ -1,2 +1,3 @@
+publishBranch: v2
 onlyBuiltDependencies:
   - protobufjs

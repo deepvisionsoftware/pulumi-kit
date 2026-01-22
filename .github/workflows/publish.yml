@@ -76,4 +76,4 @@ jobs:
 
       - id: publish
         name: Publish to NPM
-        run: pnpm publish
+        run: pnpm publish --access public
