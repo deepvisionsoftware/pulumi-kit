@@ -1,6 +1,6 @@
 {
   "name": "@pcg/pulumi-kit",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "type": "module",
   "scripts": {
     "build": "rolldown --config && tsc --emitDeclarationOnly"
@@ -10,6 +10,7 @@
   "engines": {
     "node": "24"
   },
+  "packageManager": "pnpm@10.28.1",
   "author": {
     "name": "DeepVision Software",
     "email": "code@deepvision.software"
