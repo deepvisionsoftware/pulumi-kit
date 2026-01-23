@@ -16,6 +16,8 @@ export enum GcpRoles {
   SERVICE_ACCOUNT_USER = 'iam.serviceAccountUser',
   /** Can manage certificates. */
   CERTIFICATE_MANAGER_EDITOR = 'certificatemanager.editor',
+  /** Can manage certificates. */
+  CERTIFICATE_MANAGER_OWNER = 'certificatemanager.owner',
   /** Can create and manage Compute Engine resources. */
   COMPUTE_ADMIN = 'compute.admin',
   /** Can create and manage load balancers. */
