@@ -183,7 +183,7 @@ export const useGithubForProject = async (args: UseGithubForProjectArgs, ctx: Co
       allowMergeCommit: true,
       allowRebaseMerge: false,
       allowSquashMerge: false,
-      vulnerabilityAlerts: false,
+      vulnerabilityAlerts: true,
       archived: repo.isArchived ?? false,
     }, {
       ignoreChanges: ['mergeCommitMessage', 'mergeCommitTitle', 'squashMergeCommitMessage', 'squashMergeCommitTitle'],
